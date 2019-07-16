@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
-const String routeNational = 'National League';
-const String routeAmerican = 'American Leauge';
+// routes
+const String routeHome = 'home';
+const String routeNational = 'national';
+const String routeAmerican = 'american';
+
+// titles
+const String titleNational = 'National League';
+const String titleAmerican = 'American League';
 
 // images
 const String imageNational = 'assets/national.png';

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:odds/src/constants/teams.dart';
 import 'src/constants/constants.dart' as constants;
 import 'src/screens/odds_home.dart';
 import 'src/screens/todays_games.dart';
@@ -13,13 +14,12 @@ class OddsApp extends StatelessWidget {
         theme: ThemeData(
           brightness: Brightness.light,
         ),
-        initialRoute: '/',
+        initialRoute: constants.routeHome,
         routes: {
-          '/': (context) => OddsHome(title: 'MLB Odds : Todays Games'),
-          constants.routeNational: (context) =>
-              TodaysGames(constants.routeNational),
-          constants.routeAmerican: (context) =>
-              TodaysGames(constants.routeAmerican),
+          constants.routeHome: (context) =>
+              OddsHome(title: 'MLB Odds : Todays Games'),
+          constants.routeNational: (context) => TodaysGames(leagueNational),
+          constants.routeAmerican: (context) => TodaysGames(leagueAmerican),
         });
   }
 }
