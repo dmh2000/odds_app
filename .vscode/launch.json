@@ -5,6 +5,15 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Run Script",
+      "type": "PowerShell",
+      "request": "launch",
+      "script": "${workspaceFolder}/scripts/run.cmd",
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+
+    {
       "name": "Flutter",
       "request": "launch",
       "type": "dart"

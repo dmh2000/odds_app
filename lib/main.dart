@@ -10,14 +10,13 @@ class OddsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'MLB Odds',
+        title: 'Todays Games',
         theme: ThemeData(
           brightness: Brightness.light,
         ),
         initialRoute: constants.routeHome,
         routes: {
-          constants.routeHome: (context) =>
-              OddsHome(title: 'MLB Odds : Todays Games'),
+          constants.routeHome: (context) => OddsHome(title: 'Todays Games'),
           constants.routeNational: (context) => TodaysGames(leagueNational),
           constants.routeAmerican: (context) => TodaysGames(leagueAmerican),
         });

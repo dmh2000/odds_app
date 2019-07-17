@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import '../constants/constants.dart' as constants;
 import '../constants/teams.dart';
+import '../models/team_model.dart';
 
 class TodaysGames extends StatefulWidget {
   final String _league;
@@ -26,7 +28,7 @@ class _TodaysGamesState extends State<TodaysGames> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_league),
+        title: Text('$_league League'),
       ),
       body: ListView.builder(
         itemBuilder: (BuildContext context, int index) {

@@ -10,8 +10,8 @@ const String titleNational = 'National League';
 const String titleAmerican = 'American League';
 
 // images
-const String imageNational = 'assets/national.png';
-const String imageAmerican = 'assets/american.png';
+const String imageNational = 'assets/national-300.png';
+const String imageAmerican = 'assets/american-300.png';
 
 const TextStyle buttonTextStyle = TextStyle(
   fontSize: 30.0,
