@@ -6,13 +6,17 @@ class Game extends Equatable {
   final int gameId;
   final int homeId;
   final int awayId;
-  final int venueId;
+  final String venue;
   final DateTime startTime;
   final String playedStatus;
 
-  Game(this.gameId, this.homeId, this.awayId, this.venueId, this.startTime,
+  Game(this.gameId, this.homeId, this.awayId, this.venue, this.startTime,
       this.playedStatus)
-      : super([gameId, homeId, awayId, venueId, startTime, playedStatus]);
+      : super([gameId, homeId, awayId, venue, startTime, playedStatus]);
+
+  String toString() {
+    return '$gameId:$homeId:$awayId:$venue:$startTime:$playedStatus';
+  }
 }
 
 @immutable
@@ -35,10 +39,10 @@ class Games extends Equatable {
       int awayId = sched['awayTeam']['id'];
       DateTime startTime = DateTime.parse(sched['startTime']).toLocal();
       String status = sched['playedStatus'];
-      int venueId = sched['venue']['id'];
+      String venue = sched['venue']['name'];
 
       // print('$id,$homeId,$awayId,$hour:$minute,$status,$venueId,$status');
-      return Game(id, homeId, awayId, venueId, startTime, status);
+      return Game(id, homeId, awayId, venue, startTime, status);
     }).toList();
 
     // convert to list of games

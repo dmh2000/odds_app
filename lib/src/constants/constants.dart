@@ -27,3 +27,7 @@ const TextStyle inactiveTextStyle = TextStyle(
   fontSize: 30.0,
   color: Colors.grey,
 );
+
+const TextStyle atTextStyle = TextStyle(
+  fontSize: 25.0,
+);
