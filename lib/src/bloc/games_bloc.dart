@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import './bloc.dart';
@@ -8,7 +7,9 @@ import 'apikey.dart' as apiKey;
 
 class GamesBloc extends Bloc<GamesEvent, GamesState> {
   @override
-  GamesState get initialState => GamesInitial();
+  GamesState get initialState {
+    return GamesInitial();
+  }
 
   @override
   Stream<GamesState> mapEventToState(
@@ -21,12 +22,16 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
       // request game data from server
       final http.Response rsp = await _getTodaysGames();
 
-      // convert response to game model
-      dynamic js = convert.json.decode(rsp.body);
-      models.Games games = models.Games.fromJson(js);
+      // quit if not status 200
+      if (rsp.statusCode != 200) {
+        yield GamesLoaded(models.Games(games: []));
+      } else {
+        // load the sames object
+        models.Games games = models.Games.fromJson(rsp.body);
 
-      // games are loaded
-      yield GamesLoaded(games);
+        // games are loaded
+        yield GamesLoaded(games);
+      }
     }
   }
 
@@ -36,11 +41,13 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     String year = now.year.toString();
     String month = now.month.toString().padLeft(2, '0');
     String day = now.day.toString().padLeft(2, '0');
-    String url = '${apiKey.url}/$year$month$day/games.json';
+    String url = '${apiKey.url}/games.json?date=today';
 
     Map<String, String> headers = {
       'Authorization': 'Basic ${apiKey.key}',
     };
+
+    print(url);
 
     return http.get(url, headers: headers);
   }

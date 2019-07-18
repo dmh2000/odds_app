@@ -2,7 +2,7 @@ import '../constants/teams.dart';
 
 class TeamData {
 // MAP OF TEAM[name] to Object
-  final Map<String, Team> _teams = {
+  static Map<String, Team> _teams = {
     nameAngels: teamAngels,
     nameAstros: teamAstros,
     nameAthletics: teamAthletics,
@@ -60,8 +60,11 @@ class TeamData {
   }
 
   Team getTeamById(int id) {
-    return _teams.values.firstWhere((v) {
-      return (v.id == id);
-    });
+    return _teams.values.firstWhere(
+      (v) {
+        return (v.id == id);
+      },
+      orElse: () => null,
+    );
   }
 }

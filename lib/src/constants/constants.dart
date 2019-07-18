@@ -16,3 +16,14 @@ const String imageAmerican = 'assets/american-300.png';
 const TextStyle buttonTextStyle = TextStyle(
   fontSize: 30.0,
 );
+
+const TextStyle homeTextStyle = TextStyle(
+  fontSize: 30.0,
+);
+
+const TextStyle activeTextStyle = TextStyle(fontSize: 30.0);
+
+const TextStyle inactiveTextStyle = TextStyle(
+  fontSize: 30.0,
+  color: Colors.grey,
+);

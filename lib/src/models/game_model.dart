@@ -1,3 +1,4 @@
+import 'dart:convert' as convert;
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -20,38 +21,53 @@ class Games extends Equatable {
 
   Games({@required this.games}) : super([games]);
 
-  factory Games.fromJson(dynamic js) {
+  factory Games.fromJson(String json) {
     List<Game> g;
 
-    g = js['games'].map((v) {
+    // convert response to game model
+    dynamic obj = convert.json.decode(json);
+
+    // extract list of games
+    List<dynamic> d = obj['games'].map((dynamic v) {
       var sched = v['schedule'];
       int id = sched['id'];
       int homeId = sched['homeTeam']['id'];
       int awayId = sched['awayTeam']['id'];
       DateTime startTime = DateTime.parse(sched['startTime']).toLocal();
-      String hour = startTime.hour.toString().padLeft(2, '0');
-      String minute = startTime.minute.toString().padLeft(2, '0');
       String status = sched['playedStatus'];
       int venueId = sched['venue']['id'];
 
-      print('$id,$homeId,$awayId,$hour:$minute,$status,$venueId,$status');
+      // print('$id,$homeId,$awayId,$hour:$minute,$status,$venueId,$status');
       return Game(id, homeId, awayId, venueId, startTime, status);
     }).toList();
+
+    // convert to list of games
+    g = List<Game>.from(d);
 
     return Games(games: g);
   }
 
+  bool isEmpty() {
+    return games.length == 0;
+  }
+
   Game getGameById(int id) {
     // find first game that has the specified id
-    return games.firstWhere((game) {
-      return (game.gameId == id);
-    });
+    return games.firstWhere(
+      (game) {
+        return (game.gameId == id);
+      },
+      orElse: () => null,
+    );
   }
 
   Game getGameByTeam(int teamId) {
     // find first record where either home or away matches teamId
-    return games.firstWhere((game) {
-      return (game.homeId == teamId) || (game.awayId == teamId);
-    });
+    return games.firstWhere(
+      (game) {
+        return (game.homeId == teamId) || (game.awayId == teamId);
+      },
+      orElse: () => null,
+    );
   }
 }

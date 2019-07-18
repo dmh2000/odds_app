@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:odds/src/constants/teams.dart';
+import 'package:odds/src/models/team_model.dart';
+import 'package:odds/main.dart';
 
 final List<String> teamNames = [
   'Nationals',
@@ -67,9 +69,11 @@ final List<String> locations = [
   'Texas',
 ];
 void main() {
-  testWidgets('Team Information Test', (WidgetTester tester) {
+  testWidgets('Team Information Test', (WidgetTester tester) async {
     TeamData teams = TeamData();
     List<Team> t;
+
+    await tester.pumpWidget(OddsApp());
 
     teamNames.forEach((name) {
       // names should match

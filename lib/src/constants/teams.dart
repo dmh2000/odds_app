@@ -203,7 +203,7 @@ Team teamYankees = Team(nameYankees, iconYankees, imageYankees, leagueAmerican,
 Team teamIndians = Team(nameIndians, iconIndians, imageIndians, leagueAmerican,
     divisionCentral, 'Cleveland', idIndians);
 Team teamRoyals = Team(nameRoyals, iconRoyals, imageRoyals, leagueAmerican,
-    divisionCentral, 'Kansas City', idRockies);
+    divisionCentral, 'Kansas City', idRoyals);
 Team teamTigers = Team(nameTigers, iconTigers, imageTigers, leagueAmerican,
     divisionCentral, 'Detroit', idTigers);
 Team teamTwins = Team(nameTwins, iconTwins, imageTwins, leagueAmerican,
