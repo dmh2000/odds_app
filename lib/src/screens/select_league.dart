@@ -78,7 +78,7 @@ class SelectLeagueWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GamesBloc gamesBloc = BlocProvider.of<GamesBloc>(context);
+    // final GamesBloc gamesBloc = BlocProvider.of<GamesBloc>(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

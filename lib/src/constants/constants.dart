@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 const String routeHome = 'home';
 const String routeNational = 'national';
 const String routeAmerican = 'american';
+const String routeGameBox = 'gameBox';
 
 // titles
 const String titleNational = 'National League';
@@ -30,4 +31,8 @@ const TextStyle inactiveTextStyle = TextStyle(
 
 const TextStyle atTextStyle = TextStyle(
   fontSize: 25.0,
+);
+
+const TextStyle timeTextStyle = TextStyle(
+  fontSize: 20.0,
 );

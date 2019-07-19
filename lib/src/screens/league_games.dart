@@ -5,6 +5,7 @@ import '../bloc/bloc.dart';
 import '../models/team_model.dart';
 import '../models/game_model.dart';
 import '../constants/teams.dart';
+import '../constants/constants.dart' as constants;
 
 class GamesByLeague extends StatelessWidget {
   final String _league;
@@ -66,57 +67,74 @@ class AndroidGameItem extends StatelessWidget {
     Team home = td.getTeamById(game.homeId);
     Team away = td.getTeamById(game.awayId);
 
+    //TODO : change time to AM/PM
+    String hour = game.startTime.hour.toString().padLeft(2);
+    String minute = game.startTime.minute.toString().padLeft(2, '0');
+    String start = '$hour:$minute';
+
     return GestureDetector(
       onTap: () {
         print(game.toString());
+        Navigator.pushNamed(context, constants.routeGameBox, arguments: game);
       },
       child: Card(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+        child: Column(
           children: <Widget>[
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(right: 10.0),
-                      child: Text(
-                        home.name,
-                        style: activeTextStyle,
-                      ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(right: 10.0),
+                          child: Text(
+                            home.name,
+                            style: activeTextStyle,
+                          ),
+                        ),
+                        CircleAvatar(
+                          backgroundImage: AssetImage(home.icon),
+                        ),
+                      ],
                     ),
-                    CircleAvatar(
-                      backgroundImage: AssetImage(home.icon),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+                Text(
+                  'At',
+                  style: atTextStyle,
+                ),
+                Expanded(
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundImage: AssetImage(away.icon),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 10.0),
+                          child: Text(
+                            away.name,
+                            style: activeTextStyle,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
             Text(
-              'At',
-              style: atTextStyle,
-            ),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    CircleAvatar(
-                      backgroundImage: AssetImage(away.icon),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        away.name,
-                        style: activeTextStyle,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              start,
+              style: constants.timeTextStyle,
             ),
           ],
         ),

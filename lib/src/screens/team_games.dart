@@ -15,7 +15,7 @@ class TeamsByLeague extends StatelessWidget {
   @override
   @override
   Widget build(BuildContext context) {
-    final GamesBloc gamesBloc = BlocProvider.of<GamesBloc>(context);
+    // final GamesBloc gamesBloc = BlocProvider.of<GamesBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('$_league League'),

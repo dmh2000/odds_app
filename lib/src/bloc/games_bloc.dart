@@ -37,10 +37,6 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
 
   Future<http.Response> _getTodaysGames() {
     // construct the URL for todays games
-    DateTime now = DateTime.now();
-    String year = now.year.toString();
-    String month = now.month.toString().padLeft(2, '0');
-    String day = now.day.toString().padLeft(2, '0');
     String url = '${apiKey.url}/games.json?date=today';
 
     Map<String, String> headers = {
