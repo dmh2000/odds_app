@@ -43,6 +43,7 @@ class GamesByLeague extends StatelessWidget {
   }
 
   List<Game> gamesInLeague(List<Game> games) {
+    // filter
     return games.where((Game game) {
       Team home = TeamData().getTeamById(game.homeId);
       Team away = TeamData().getTeamById(game.awayId);
@@ -67,14 +68,28 @@ class AndroidGameItem extends StatelessWidget {
     Team home = td.getTeamById(game.homeId);
     Team away = td.getTeamById(game.awayId);
 
-    //TODO : change time to AM/PM
-    String hour = game.startTime.hour.toString().padLeft(2);
+    // change 24 hour time to AM/PM
+    String ampm;
+    int hour24 = game.startTime.hour;
+    if (hour24 >= 12) {
+      hour24 -= 12;
+      ampm = 'PM';
+    } else {
+      ampm = 'AM';
+    }
+
+    // annotate if it is an interleage game
+    String interleague = (home.league != away.league) ? '(IL)' : '';
+
+    // construct the start time string
+    String hour = hour24.toString().padLeft(2);
     String minute = game.startTime.minute.toString().padLeft(2, '0');
-    String start = '$hour:$minute';
+    String start = '$hour:$minute $ampm $interleague';
 
     return GestureDetector(
       onTap: () {
         print(game.toString());
+        // route to the selected game box score
         Navigator.pushNamed(context, constants.routeGameBox, arguments: game);
       },
       child: Card(
@@ -84,52 +99,12 @@ class AndroidGameItem extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Expanded(
-                  child: Container(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(right: 10.0),
-                          child: Text(
-                            home.name,
-                            style: activeTextStyle,
-                          ),
-                        ),
-                        CircleAvatar(
-                          backgroundImage: AssetImage(home.icon),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                awayTeam(team: away),
                 Text(
                   'At',
                   style: atTextStyle,
                 ),
-                Expanded(
-                  child: Container(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        CircleAvatar(
-                          backgroundImage: AssetImage(away.icon),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 10.0),
-                          child: Text(
-                            away.name,
-                            style: activeTextStyle,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                homeTeam(team: home),
               ],
             ),
             Text(
@@ -141,4 +116,54 @@ class AndroidGameItem extends StatelessWidget {
       ),
     );
   }
+
+  Widget awayTeam({
+    @required Team team,
+  }) {
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(right: 10.0),
+              child: Text(
+                team.name,
+                style: activeTextStyle,
+              ),
+            ),
+            CircleAvatar(
+              backgroundImage: AssetImage(team.icon),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+Widget homeTeam({
+  @required Team team,
+}) {
+  return Expanded(
+    child: Container(
+      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          CircleAvatar(
+            backgroundImage: AssetImage(team.icon),
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 10.0),
+            child: Text(
+              team.name,
+              style: activeTextStyle,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }

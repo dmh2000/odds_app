@@ -36,3 +36,11 @@ const TextStyle atTextStyle = TextStyle(
 const TextStyle timeTextStyle = TextStyle(
   fontSize: 20.0,
 );
+
+const TextStyle gameTextStyle = TextStyle(
+  fontSize: 30.0,
+);
+
+const TextStyle matchupTextStyle = TextStyle(
+  fontSize: 25.0,
+);
