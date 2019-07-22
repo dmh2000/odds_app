@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/bloc.dart';
 import '../constants/constants.dart' as constants;
-import '../constants/teams.dart';
 import '../models/team_model.dart';
 import '../models/game_model.dart';
 

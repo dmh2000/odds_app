@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:http/http.dart' as http;
-import 'package:bloc/bloc.dart';
+import 'package:bloc/bloc.dart' as bloc;
 import './bloc.dart';
 import '../models/models.dart' as models;
 import 'apikey.dart' as apiKey;
 
-class GamesBloc extends Bloc<GamesEvent, GamesState> {
+class GamesBloc extends bloc.Bloc<GamesEvent, GamesState> {
   @override
   GamesState get initialState {
     return GamesInitial();
@@ -42,8 +42,6 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     Map<String, String> headers = {
       'Authorization': 'Basic ${apiKey.key}',
     };
-
-    print(url);
 
     return http.get(url, headers: headers);
   }

@@ -44,3 +44,7 @@ const TextStyle gameTextStyle = TextStyle(
 const TextStyle matchupTextStyle = TextStyle(
   fontSize: 25.0,
 );
+
+const TextStyle statusTextStyle = TextStyle(
+  fontSize: 25.0,
+);

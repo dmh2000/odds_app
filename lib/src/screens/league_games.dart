@@ -4,7 +4,6 @@ import 'package:odds/src/constants/constants.dart';
 import '../bloc/bloc.dart';
 import '../models/team_model.dart';
 import '../models/game_model.dart';
-import '../constants/teams.dart';
 import '../constants/constants.dart' as constants;
 
 class GamesByLeague extends StatelessWidget {
@@ -54,8 +53,9 @@ class GamesByLeague extends StatelessWidget {
 
 class AndroidGameItem extends StatelessWidget {
   final Game game;
+  final BoxScoreBloc _boxScoreBloc = BoxScoreBloc();
 
-  const AndroidGameItem({
+  AndroidGameItem({
     @required Game game,
     Key key,
   })  : game = game,
@@ -86,32 +86,38 @@ class AndroidGameItem extends StatelessWidget {
     String minute = game.startTime.minute.toString().padLeft(2, '0');
     String start = '$hour:$minute $ampm $interleague';
 
-    return GestureDetector(
-      onTap: () {
-        print(game.toString());
-        // route to the selected game box score
-        Navigator.pushNamed(context, constants.routeGameBox, arguments: game);
-      },
-      child: Card(
-        margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                awayTeam(team: away),
-                Text(
-                  'At',
-                  style: atTextStyle,
-                ),
-                homeTeam(team: home),
-              ],
-            ),
-            Text(
-              start,
-              style: constants.timeTextStyle,
-            ),
-          ],
+    return BlocProvider(
+      builder: (context) => _boxScoreBloc,
+      child: GestureDetector(
+        onTap: () {
+          // start fetch of game box score
+          _boxScoreBloc
+              .dispatch(GetBoxScore(awayId: game.awayId, homeId: game.homeId));
+
+          // route to the selected game box score
+          Navigator.pushNamed(context, constants.routeGameBox, arguments: game);
+        },
+        child: Card(
+          margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  awayTeam(team: away),
+                  Text(
+                    'At',
+                    style: atTextStyle,
+                  ),
+                  homeTeam(team: home),
+                ],
+              ),
+              Text(
+                start,
+                style: constants.timeTextStyle,
+              ),
+            ],
+          ),
         ),
       ),
     );

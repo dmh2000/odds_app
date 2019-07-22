@@ -1,5 +1,3 @@
-import '../models/team_model.dart';
-
 // leagues
 const String leagueNational = 'National';
 const String leagueAmerican = 'American';
@@ -134,3 +132,35 @@ const int idRays = 115;
 const int idRangers = 121;
 const int idBluejays = 112;
 const int idNationals = 126;
+
+//  TEAM ABBREVIATIONS
+const String abbrDiamondbacks = 'ARI';
+const String abbrBraves = 'ATL';
+const String abbrOrioles = 'BAL';
+const String abbrRedsox = 'BOS';
+const String abbrCubs = 'CHC';
+const String abbrWhitesox = 'CWS';
+const String abbrReds = 'CIN';
+const String abbrIndians = 'CLE';
+const String abbrRockies = 'COL';
+const String abbrTigers = 'DET';
+const String abbrAstros = 'HOU';
+const String abbrRoyals = 'KC';
+const String abbrAngels = 'LAA';
+const String abbrDodgers = 'LAD';
+const String abbrMarlins = 'MIA';
+const String abbrBrewers = 'MIL';
+const String abbrTwins = 'MIN';
+const String abbrMets = 'NYM';
+const String abbrYankees = 'NYY';
+const String abbrAthletics = 'OAK';
+const String abbrPhillies = 'PHI';
+const String abbrPirates = 'PIT';
+const String abbrPadres = 'SD';
+const String abbrGiants = 'SF';
+const String abbrMariners = 'SEA';
+const String abbrCardinals = 'STL';
+const String abbrRays = 'TB';
+const String abbrRangers = 'TEX';
+const String abbrBluejays = 'TOR';
+const String abbrNationals = 'WAS';

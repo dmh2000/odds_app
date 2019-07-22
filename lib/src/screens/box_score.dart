@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import '../models/game_model.dart';
-import '../models/team_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../bloc/bloc.dart';
+import '../models/models.dart';
 import '../constants/constants.dart';
 
 //TODO show box score
-class GameBox extends StatelessWidget {
-  const GameBox({Key key}) : super(key: key);
+class BoxScore extends StatelessWidget {
+  const BoxScore({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final BoxScoreBloc _boxScoreBloc = BlocProvider.of<BoxScoreBloc>(context);
     final Game game = ModalRoute.of(context).settings.arguments;
     final TeamData td = TeamData();
 
@@ -18,6 +20,24 @@ class GameBox extends StatelessWidget {
     String awayText = '${away.location} ${away.name}';
     String homeText = '${home.location} ${home.name}';
     String gameText = '$awayText at $homeText';
+
+    // change 24 hour time to AM/PM
+    String ampm;
+    int hour24 = game.startTime.hour;
+    if (hour24 >= 12) {
+      hour24 -= 12;
+      ampm = 'PM';
+    } else {
+      ampm = 'AM';
+    }
+
+    // annotate if it is an interleage game
+    String interleague = (home.league != away.league) ? '(IL)' : '';
+
+    // construct the start time string
+    String hour = hour24.toString().padLeft(2);
+    String minute = game.startTime.minute.toString().padLeft(2, '0');
+    String gameTime = '$hour:$minute $ampm $interleague';
 
     return Scaffold(
       appBar: AppBar(
@@ -32,7 +52,7 @@ class GameBox extends StatelessWidget {
                 bottom: 20.0,
               ),
               child: Text(
-                '11:05 AM',
+                gameTime,
                 style: gameTextStyle,
               ),
             ),
@@ -208,7 +228,6 @@ class GameBox extends StatelessWidget {
       @required String awayName,
       @required homeName,
       @required int inning}) {
-    String inningText = 'Inning : $inning';
     return Container(
       margin: EdgeInsets.only(top: 30.0),
       child: Column(
@@ -239,7 +258,7 @@ class GameBox extends StatelessWidget {
             col1: 'Inning',
             col2: inning.toString(),
           ),
-          scoreRow(
+          statusRow(
             col1: 'Status',
             col2: game.playedStatus.toLowerCase(),
           ),
@@ -290,6 +309,37 @@ class GameBox extends StatelessWidget {
           child: Container(
             child: Text(
               col4,
+              style: gameTextStyle,
+            ),
+          ),
+          flex: 1,
+        ),
+      ],
+    );
+  }
+
+  Widget statusRow({
+    String col1 = '',
+    String col2 = '',
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.only(left: 20.0),
+            child: Text(
+              col1,
+              style: statusTextStyle,
+            ),
+          ),
+          flex: 2,
+        ),
+        Expanded(
+          child: Container(
+            margin: EdgeInsets.only(top: 10.0),
+            child: Text(
+              col2,
               style: gameTextStyle,
             ),
           ),

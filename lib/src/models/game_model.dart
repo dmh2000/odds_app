@@ -2,6 +2,7 @@ import 'dart:convert' as convert;
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+@immutable
 class Game extends Equatable {
   final int gameId;
   final int homeId;

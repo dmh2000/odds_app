@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'src/constants/constants.dart' as constants;
 import 'src/screens/select_league.dart';
 import 'src/screens/league_games.dart';
-import 'src/screens/game_box.dart';
+import 'src/screens/box_score.dart';
 import 'src/bloc/bloc.dart';
 
 void main() => runApp(OddsApp());
@@ -30,7 +30,7 @@ class OddsApp extends StatelessWidget {
             // constants.routeAmerican: (context) => TeamsByLeague(leagueAmerican),
             constants.routeNational: (context) => GamesByLeague(leagueNational),
             constants.routeAmerican: (context) => GamesByLeague(leagueAmerican),
-            constants.routeGameBox: (context) => GameBox(),
+            constants.routeGameBox: (context) => BoxScore(),
           }),
     );
   }

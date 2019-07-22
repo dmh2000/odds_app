@@ -8,38 +8,39 @@ class Team {
   final String division;
   final String location;
   final int id;
+  final String abbr;
 
   Team(this.name, this.icon, this.image, this.league, this.division,
-      this.location, this.id);
+      this.location, this.id, this.abbr);
 }
 
 // TEAM OBJECTS
 
 // NATIONAL LEAGUE
 Team teamBraves = Team(nameBraves, iconBraves, imageBraves, leagueNational,
-    divisionEast, 'Atlanta', idBraves);
+    divisionEast, 'Atlanta', idBraves, abbrBraves);
 Team teamMarlins = Team(nameMarlins, iconMarlins, imageMarlins, leagueNational,
-    divisionEast, 'Miami', idMarlins);
+    divisionEast, 'Miami', idMarlins, abbrMarlins);
 Team teamMets = Team(nameMets, iconMets, imageMets, leagueNational,
-    divisionEast, 'New York', idMets);
+    divisionEast, 'New York', idMets, abbrMets);
 Team teamPhillies = Team(namePhillies, iconPhillies, imagePhillies,
-    leagueNational, divisionEast, 'Philadelphia', idPhillies);
+    leagueNational, divisionEast, 'Philadelphia', idPhillies, abbrPhillies);
 Team teamNationals = Team(nameNationals, iconNationals, imageNationals,
-    leagueNational, divisionEast, 'Washington', idNationals);
+    leagueNational, divisionEast, 'Washington', idNationals, abbrNationals);
 
 Team teamBrewers = Team(nameBrewers, iconBrewers, imageBrewers, leagueNational,
-    divisionCentral, 'Milwaukee', idBrewers);
+    divisionCentral, 'Milwaukee', idBrewers, abbrBrewers);
 Team teamCardinals = Team(nameCardinals, iconCardinals, imageCardinals,
-    leagueNational, divisionCentral, 'Cincinnati', idCardinals);
+    leagueNational, divisionCentral, 'Cincinnati', idCardinals, abbrCardinals);
 Team teamCubs = Team(nameCubs, iconCubs, imageCubs, leagueNational,
-    divisionCentral, 'Chicago', idCubs);
+    divisionCentral, 'Chicago', idCubs, abbrCubs);
 Team teamPirates = Team(namePirates, iconPirates, imagePirates, leagueNational,
-    divisionCentral, 'Pittsburgh', idPirates);
+    divisionCentral, 'Pittsburgh', idPirates, abbrPirates);
 Team teamReds = Team(nameReds, iconReds, imageReds, leagueNational,
-    divisionCentral, 'St. Louis', idReds);
+    divisionCentral, 'St. Louis', idReds, abbrReds);
 
 Team teamRockies = Team(nameRockies, iconRockies, imageRockies, leagueNational,
-    divisionWest, 'Arizona', idRockies);
+    divisionWest, 'Arizona', idRockies, abbrRockies);
 Team teamDiamondbacks = Team(
     nameDiamondbacks,
     iconDiamondbacks,
@@ -47,47 +48,48 @@ Team teamDiamondbacks = Team(
     leagueNational,
     divisionWest,
     'Colorado',
-    idDiamondbacks);
+    idDiamondbacks,
+    abbrDiamondbacks);
 Team teamDodgers = Team(nameDodgers, iconDodgers, imageDodgers, leagueNational,
-    divisionWest, 'Los Angeles', idDodgers);
+    divisionWest, 'Los Angeles', idDodgers, abbrDodgers);
 Team teamGiants = Team(nameGiants, iconGiants, imageGiants, leagueNational,
-    divisionWest, 'San Francisco', idGiants);
+    divisionWest, 'San Francisco', idGiants, abbrGiants);
 Team teamPadres = Team(namePadres, iconPadres, imagePadres, leagueNational,
-    divisionWest, 'Padres', idPadres);
+    divisionWest, 'Padres', idPadres, abbrPadres);
 
 // AMERICAN LEAGUE
 Team teamBluejays = Team(nameBluejays, iconBluejays, imageBluejays,
-    leagueAmerican, divisionEast, 'Toronto', idBluejays);
+    leagueAmerican, divisionEast, 'Toronto', idBluejays, abbrBluejays);
 Team teamOrioles = Team(nameOrioles, iconOrioles, imageOrioles, leagueAmerican,
-    divisionEast, 'Baltimore', idOrioles);
+    divisionEast, 'Baltimore', idOrioles, abbrOrioles);
 Team teamRays = Team(nameRays, iconRays, imageRays, leagueAmerican,
-    divisionEast, 'Tampa Bay', idRays);
+    divisionEast, 'Tampa Bay', idRays, abbrRays);
 Team teamRedsox = Team(nameRedsox, iconRedsox, imageRedsox, leagueAmerican,
-    divisionEast, 'Boston', idRedsox);
+    divisionEast, 'Boston', idRedsox, abbrRedsox);
 Team teamYankees = Team(nameYankees, iconYankees, imageYankees, leagueAmerican,
-    divisionEast, 'New York', idYankees);
+    divisionEast, 'New York', idYankees, abbrYankees);
 
 Team teamIndians = Team(nameIndians, iconIndians, imageIndians, leagueAmerican,
-    divisionCentral, 'Cleveland', idIndians);
+    divisionCentral, 'Cleveland', idIndians, abbrIndians);
 Team teamRoyals = Team(nameRoyals, iconRoyals, imageRoyals, leagueAmerican,
-    divisionCentral, 'Kansas City', idRoyals);
+    divisionCentral, 'Kansas City', idRoyals, abbrRoyals);
 Team teamTigers = Team(nameTigers, iconTigers, imageTigers, leagueAmerican,
-    divisionCentral, 'Detroit', idTigers);
+    divisionCentral, 'Detroit', idTigers, abbrTigers);
 Team teamTwins = Team(nameTwins, iconTwins, imageTwins, leagueAmerican,
-    divisionCentral, 'Minnesota', idTwins);
+    divisionCentral, 'Minnesota', idTwins, abbrTwins);
 Team teamWhitesox = Team(nameWhitesox, iconWhitesox, imageWhitesox,
-    leagueAmerican, divisionCentral, 'Chicago', idWhitesox);
+    leagueAmerican, divisionCentral, 'Chicago', idWhitesox, abbrWhitesox);
 
 Team teamAngels = Team(nameAngels, iconAngels, imageAngels, leagueAmerican,
-    divisionWest, 'Los Angeles', idAngels);
+    divisionWest, 'Los Angeles', idAngels, abbrAngels);
 Team teamAstros = Team(nameAstros, iconAstros, imageAstros, leagueAmerican,
-    divisionWest, 'Houston', idAstros);
+    divisionWest, 'Houston', idAstros, abbrAstros);
 Team teamAthletics = Team(nameAthletics, iconAthletics, imageAthletics,
-    leagueAmerican, divisionWest, 'Oakland', idAthletics);
+    leagueAmerican, divisionWest, 'Oakland', idAthletics, abbrAthletics);
 Team teamMariners = Team(nameMariners, iconMariners, imageMariners,
-    leagueAmerican, divisionWest, 'Seattle', idMariners);
+    leagueAmerican, divisionWest, 'Seattle', idMariners, abbrMariners);
 Team teamRangers = Team(nameRangers, iconRangers, imageRangers, leagueAmerican,
-    divisionWest, 'Texas', idRangers);
+    divisionWest, 'Texas', idRangers, abbrRangers);
 
 class TeamData {
 // MAP OF TEAM[name] to Object
