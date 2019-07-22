@@ -20,14 +20,14 @@ class BoxScoreBloc extends bloc.Bloc<BoxScoreEvent, BoxScoreState> {
       yield BoxScoreLoading();
 
       // request game data from server
-      final http.Response rsp = await _getBoxScore();
+      final http.Response rsp = await _getBoxScore(event.awayId, event.homeId);
 
       // quit if not status 200
       if (rsp.statusCode != 200) {
         yield BoxScoreLoaded(models.BoxScoreModel.empty());
       } else {
         // load the sames object
-        models.BoxScoreModel boxScore = models.BoxScoreModel.fromJson(rsp.body);
+        models.BoxScoreModel boxScore = models.BoxScoreModel.fromJSON(rsp.body);
 
         // BoxScore are loaded
         yield BoxScoreLoaded(boxScore);

@@ -13,6 +13,7 @@ class BoxScoreModel extends Equatable {
   final int _homeHits;
   final int _homeErrors;
   final int _inning;
+
   BoxScoreModel.empty()
       : _away = 0,
         _home = 0,
@@ -86,5 +87,9 @@ class BoxScoreModel extends Equatable {
     String inning = _inning.toString().padLeft(2, '');
 
     return '$_away,$_home,$ar,$ah,$ae,$hr,$hh,$he,$inning';
+  }
+
+  bool isEmpty() {
+    return _away == 0;
   }
 }

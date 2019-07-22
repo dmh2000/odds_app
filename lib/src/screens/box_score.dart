@@ -1,22 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/bloc.dart';
-import '../models/models.dart';
-import '../constants/constants.dart';
+import '../bloc/bloc.dart' as bloc;
+import '../models/models.dart' as models;
+import '../constants/constants.dart' as constants;
 
 //TODO show box score
 class BoxScore extends StatelessWidget {
   const BoxScore({Key key}) : super(key: key);
-
   @override
-  Widget build(BuildContext context) {
-    final BoxScoreBloc _boxScoreBloc = BlocProvider.of<BoxScoreBloc>(context);
-    final Game game = ModalRoute.of(context).settings.arguments;
-    final TeamData td = TeamData();
+  Widget build(context) {
+    final bloc.BoxScoreBloc _boxScoreBloc =
+        BlocProvider.of<bloc.BoxScoreBloc>(context);
+    final models.Game game = ModalRoute.of(context).settings.arguments;
+    // final models.TeamData td = models.TeamData();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Box Score'),
+      ),
+      body: BlocListener(
+        bloc: _boxScoreBloc,
+        listener: (context, bloc.BoxScoreState state) {},
+        child: BlocBuilder(
+          bloc: _boxScoreBloc,
+          builder: (BuildContext context, bloc.BoxScoreState state) {
+            if (state is bloc.BoxScoreInitial) {
+              return loading();
+            } else if (state is bloc.BoxScoreLoading) {
+              return loading();
+            } else if (state is bloc.BoxScoreLoaded) {
+              if (state.boxScore.isEmpty()) {
+                return Center(
+                  child: Text(
+                    'No Games Today! Try Again Tomorrow!',
+                    style: constants.homeTextStyle,
+                  ),
+                );
+              } else {
+                return boxScoreWidget(state.boxScore, game);
+              }
+            } else {
+              return null;
+            }
+          },
+        ),
+      ),
+    );
+  }
 
-    Team home = td.getTeamById(game.homeId);
-    Team away = td.getTeamById(game.awayId);
+  Widget loading() {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Text(
+          "Checking For Today's Games",
+          style: constants.homeTextStyle,
+        ),
+        CircularProgressIndicator(),
+      ],
+    ));
+  }
+
+  Widget boxScoreWidget(models.BoxScoreModel boxScore, models.Game game) {
+    final models.TeamData td = models.TeamData();
+
+    models.Team home = td.getTeamById(game.homeId);
+    models.Team away = td.getTeamById(game.awayId);
     String awayText = '${away.location} ${away.name}';
     String homeText = '${home.location} ${home.name}';
     String gameText = '$awayText at $homeText';
@@ -53,7 +103,7 @@ class BoxScore extends StatelessWidget {
               ),
               child: Text(
                 gameTime,
-                style: gameTextStyle,
+                style: constants.gameTextStyle,
               ),
             ),
             Container(
@@ -63,7 +113,7 @@ class BoxScore extends StatelessWidget {
                   teamTitle(icon: away.icon, name: away.name),
                   Text(
                     'At',
-                    style: gameTextStyle,
+                    style: constants.gameTextStyle,
                   ),
                   teamTitle(icon: home.icon, name: home.name),
                 ],
@@ -98,7 +148,7 @@ class BoxScore extends StatelessWidget {
           margin: EdgeInsets.only(left: 10.0),
           child: Text(
             name,
-            style: gameTextStyle,
+            style: constants.gameTextStyle,
           ),
         ),
       ],
@@ -117,7 +167,7 @@ class BoxScore extends StatelessWidget {
         children: <Widget>[
           Text(
             'Matchup',
-            style: gameTextStyle,
+            style: constants.gameTextStyle,
           ),
           Container(
             margin: EdgeInsets.only(left: 20.0, right: 20.0),
@@ -130,7 +180,7 @@ class BoxScore extends StatelessWidget {
                         margin: EdgeInsets.only(top: 10.0, right: 10.0),
                         child: Text(
                           'Home',
-                          style: matchupTextStyle,
+                          style: constants.matchupTextStyle,
                           textAlign: TextAlign.end,
                         ),
                       ),
@@ -141,7 +191,7 @@ class BoxScore extends StatelessWidget {
                         margin: EdgeInsets.only(top: 10.0),
                         child: Text(
                           home,
-                          style: matchupTextStyle,
+                          style: constants.matchupTextStyle,
                         ),
                       ),
                       flex: 1,
@@ -151,7 +201,7 @@ class BoxScore extends StatelessWidget {
                         margin: EdgeInsets.only(top: 10.0, right: 10.0),
                         child: Text(
                           'Over',
-                          style: matchupTextStyle,
+                          style: constants.matchupTextStyle,
                           textAlign: TextAlign.end,
                         ),
                       ),
@@ -162,7 +212,7 @@ class BoxScore extends StatelessWidget {
                         margin: EdgeInsets.only(top: 10.0),
                         child: Text(
                           over.toString().padLeft(3, '0'),
-                          style: matchupTextStyle,
+                          style: constants.matchupTextStyle,
                         ),
                       ),
                       flex: 1,
@@ -176,7 +226,7 @@ class BoxScore extends StatelessWidget {
                         margin: EdgeInsets.only(top: 10.0, right: 10.0),
                         child: Text(
                           'Away',
-                          style: matchupTextStyle,
+                          style: constants.matchupTextStyle,
                           textAlign: TextAlign.end,
                         ),
                       ),
@@ -187,7 +237,7 @@ class BoxScore extends StatelessWidget {
                         margin: EdgeInsets.only(top: 10.0),
                         child: Text(
                           away,
-                          style: matchupTextStyle,
+                          style: constants.matchupTextStyle,
                         ),
                       ),
                       flex: 1,
@@ -197,7 +247,7 @@ class BoxScore extends StatelessWidget {
                         margin: EdgeInsets.only(top: 10.0, right: 10.0),
                         child: Text(
                           'Under',
-                          style: matchupTextStyle,
+                          style: constants.matchupTextStyle,
                           textAlign: TextAlign.end,
                         ),
                       ),
@@ -208,7 +258,7 @@ class BoxScore extends StatelessWidget {
                         margin: EdgeInsets.only(top: 10.0),
                         child: Text(
                           under.toString().padLeft(3, '0'),
-                          style: matchupTextStyle,
+                          style: constants.matchupTextStyle,
                         ),
                       ),
                       flex: 1,
@@ -224,7 +274,7 @@ class BoxScore extends StatelessWidget {
   }
 
   Widget score(
-      {@required Game game,
+      {@required models.Game game,
       @required String awayName,
       @required homeName,
       @required int inning}) {
@@ -235,7 +285,7 @@ class BoxScore extends StatelessWidget {
         children: <Widget>[
           Text(
             'Score',
-            style: gameTextStyle,
+            style: constants.gameTextStyle,
           ),
           scoreRow(
             col2: 'R',
@@ -281,7 +331,7 @@ class BoxScore extends StatelessWidget {
             padding: EdgeInsets.only(left: 20.0),
             child: Text(
               col1,
-              style: gameTextStyle,
+              style: constants.gameTextStyle,
             ),
           ),
           flex: 5,
@@ -291,7 +341,7 @@ class BoxScore extends StatelessWidget {
             margin: EdgeInsets.only(top: 10.0),
             child: Text(
               col2,
-              style: gameTextStyle,
+              style: constants.gameTextStyle,
             ),
           ),
           flex: 1,
@@ -300,7 +350,7 @@ class BoxScore extends StatelessWidget {
           child: Container(
             child: Text(
               col3,
-              style: gameTextStyle,
+              style: constants.gameTextStyle,
             ),
           ),
           flex: 1,
@@ -309,7 +359,7 @@ class BoxScore extends StatelessWidget {
           child: Container(
             child: Text(
               col4,
-              style: gameTextStyle,
+              style: constants.gameTextStyle,
             ),
           ),
           flex: 1,
@@ -330,7 +380,7 @@ class BoxScore extends StatelessWidget {
             padding: EdgeInsets.only(left: 20.0),
             child: Text(
               col1,
-              style: statusTextStyle,
+              style: constants.statusTextStyle,
             ),
           ),
           flex: 2,
@@ -340,7 +390,7 @@ class BoxScore extends StatelessWidget {
             margin: EdgeInsets.only(top: 10.0),
             child: Text(
               col2,
-              style: gameTextStyle,
+              style: constants.gameTextStyle,
             ),
           ),
           flex: 1,
