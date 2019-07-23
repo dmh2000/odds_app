@@ -23,11 +23,14 @@ class _SelectLeagueState extends State<SelectLeague> {
   @override
   Widget build(BuildContext context) {
     final bloc.GamesBloc _gamesBloc = BlocProvider.of<bloc.GamesBloc>(context);
-    final size = MediaQuery.of(context).size;
+    final MediaQueryData mq = MediaQuery.of(context);
 
     // this screen is always called first so initialize the global device data object
-    device.setDeviceType(size.width);
-    print(size);
+    device.setDeviceType(mq.size.width);
+    // print(mq.size.width);
+    // print(mq.size.height);
+    // print(mq.devicePixelRatio);
+    // print(mq.textScaleFactor);
 
     return Scaffold(
       appBar: AppBar(

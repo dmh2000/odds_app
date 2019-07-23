@@ -56,11 +56,11 @@ class AndroidTeamItem extends StatelessWidget {
               int aid = g.awayId;
               models.Team home = models.getTeamById(hid);
               if (home == null) {
-                print("home: $hid");
+                print("null home: $hid");
               }
               models.Team away = models.getTeamById(aid);
               if (away == null) {
-                print("away: $aid");
+                print("null away: $aid");
               }
             });
           }

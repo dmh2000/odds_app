@@ -25,8 +25,27 @@ class BoxScoreBloc extends bloc.Bloc<BoxScoreEvent, BoxScoreState> {
 
       // quit if not status 200
       if (rsp.statusCode != 200) {
+        print(rsp.reasonPhrase);
         yield BoxScoreLoaded(models.BoxScoreModel.empty());
       } else {
+        // load the sames object
+        models.BoxScoreModel boxScore = models.BoxScoreModel.fromJSON(rsp.body);
+
+        // BoxScore are loaded
+        yield BoxScoreLoaded(boxScore);
+      }
+    } else if (event is UpdateBoxScore) {
+      // request game data from server
+      final http.Response rsp = await _getBoxScore(event.awayId, event.homeId);
+
+      if (rsp.statusCode != 200) {
+        // no content or error
+        print(rsp.reasonPhrase);
+        yield BoxScoreLoaded(models.BoxScoreModel.empty());
+      } else {
+        // got an update
+        print('updated');
+
         // load the sames object
         models.BoxScoreModel boxScore = models.BoxScoreModel.fromJSON(rsp.body);
 
@@ -48,7 +67,6 @@ class BoxScoreBloc extends bloc.Bloc<BoxScoreEvent, BoxScoreState> {
     String month = date.month.toString().padLeft(2, '0');
     String day = date.day.toString().padLeft(2, '0');
     url = '$url/2019$month$day-$awayAbbr-$homeAbbr/boxscore.json';
-    print(url);
 
     Map<String, String> headers = {
       'Authorization': 'Basic ${apiKey.key}',

@@ -124,17 +124,8 @@ Future<BoxScoreModel> getBoxScore(
   int homeErrs = scoring['homeErrorsTotal'];
 
   int inning = scoring['currentInning'] ?? scoring['innings'].length;
-  return BoxScoreModel(
-    awayTeam,
-    homeTeam,
-    awayRuns,
-    awayHits,
-    awayErrs,
-    homeRuns,
-    homeHits,
-    homeErrs,
-    inning,
-  );
+  return BoxScoreModel(awayTeam, homeTeam, awayRuns, awayHits, awayErrs,
+      homeRuns, homeHits, homeErrs, inning, 'not started');
 }
 
 main() {

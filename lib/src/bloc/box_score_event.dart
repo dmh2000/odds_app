@@ -11,3 +11,9 @@ class GetBoxScore extends BoxScoreEvent {
   final int homeId;
   GetBoxScore({@required this.awayId, @required this.homeId}) : super();
 }
+
+class UpdateBoxScore extends BoxScoreEvent {
+  final int awayId;
+  final int homeId;
+  UpdateBoxScore({@required this.awayId, @required this.homeId}) : super();
+}

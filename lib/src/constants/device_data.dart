@@ -21,6 +21,8 @@ abstract class DeviceData {
 
   String imageScale(String img);
 
+  double get boxMargin;
+
   DeviceData();
 
   factory DeviceData.instance(double width) {
@@ -80,6 +82,9 @@ class LargeDevice extends DeviceData {
 
   @override
   String imageScale(String img) => 'assets/large/$img';
+
+  @override
+  double get boxMargin => 20.0;
 }
 
 class SmallDevice extends DeviceData {
@@ -129,6 +134,9 @@ class SmallDevice extends DeviceData {
   String imageScale(String img) {
     return 'assets/small/$img';
   }
+
+  @override
+  double get boxMargin => 10.0;
 }
 
 void setDeviceType(double width) {

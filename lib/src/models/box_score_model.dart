@@ -4,26 +4,28 @@ import 'package:meta/meta.dart';
 
 @immutable
 class BoxScoreModel extends Equatable {
-  final int _away;
-  final int _home;
-  final int _awayRuns;
-  final int _awayHits;
-  final int _awayErrors;
-  final int _homeRuns;
-  final int _homeHits;
-  final int _homeErrors;
-  final int _inning;
+  final int away;
+  final int home;
+  final int awayRuns;
+  final int awayHits;
+  final int awayErrors;
+  final int homeRuns;
+  final int homeHits;
+  final int homeErrors;
+  final int inning;
+  final String status;
 
   BoxScoreModel.empty()
-      : _away = 0,
-        _home = 0,
-        _awayRuns = 0,
-        _awayHits = 0,
-        _awayErrors = 0,
-        _homeRuns = 0,
-        _homeHits = 0,
-        _homeErrors = 0,
-        _inning = 0;
+      : away = 0,
+        home = 0,
+        awayRuns = 0,
+        awayHits = 0,
+        awayErrors = 0,
+        homeRuns = 0,
+        homeHits = 0,
+        homeErrors = 0,
+        inning = 0,
+        status = "Not Started";
 
   factory BoxScoreModel.fromJSON(String json) {
     // parse request
@@ -38,18 +40,20 @@ class BoxScoreModel extends Equatable {
     var scoring = obj['scoring'];
     var game = obj['game'];
 
-    int awayTeam = game['awayTeam']['id'];
-    int homeTeam = game['homeTeam']['id'];
+    String status = game['playedStatus'];
 
-    int awayRuns = scoring['awayScoreTotal'];
-    int awayHits = scoring['awayHitsTotal'];
-    int awayErrs = scoring['awayErrorsTotal'];
+    int awayTeam = game['awayTeam']['id'] ?? 0;
+    int homeTeam = game['homeTeam']['id'] ?? 0;
 
-    int homeRuns = scoring['homeScoreTotal'];
-    int homeHits = scoring['homeHitsTotal'];
-    int homeErrs = scoring['homeErrorsTotal'];
+    int awayRuns = scoring['awayScoreTotal'] ?? 0;
+    int awayHits = scoring['awayHitsTotal'] ?? 0;
+    int awayErrs = scoring['awayErrorsTotal'] ?? 0;
 
-    int inning = scoring['currentInning'] ?? scoring['innings'].length;
+    int homeRuns = scoring['homeScoreTotal'] ?? 0;
+    int homeHits = scoring['homeHitsTotal'] ?? 0;
+    int homeErrs = scoring['homeErrorsTotal'] ?? 0;
+
+    int inning = scoring['currentInning'] ?? scoring['innings'].length ?? 0;
 
     return BoxScoreModel(
       awayTeam,
@@ -61,35 +65,36 @@ class BoxScoreModel extends Equatable {
       homeHits,
       homeErrs,
       inning,
+      status,
     );
   }
 
   BoxScoreModel(
-      this._away,
-      this._home,
-      this._awayRuns,
-      this._awayHits,
-      this._awayErrors,
-      this._homeRuns,
-      this._homeHits,
-      this._homeErrors,
-      this._inning);
+    this.away,
+    this.home,
+    this.awayRuns,
+    this.awayHits,
+    this.awayErrors,
+    this.homeRuns,
+    this.homeHits,
+    this.homeErrors,
+    this.inning,
+    this.status,
+  );
 
   String toString() {
-    String ar = _awayRuns.toString().padLeft(2, '');
-    String ah = _awayHits.toString().padLeft(2, '');
-    String ae = _awayErrors.toString().padLeft(2, '');
+    String ar = awayRuns.toString().padLeft(2, '');
+    String ah = awayHits.toString().padLeft(2, '');
+    String ae = awayErrors.toString().padLeft(2, '');
 
-    String hr = _homeRuns.toString().padLeft(2, '');
-    String hh = _homeHits.toString().padLeft(2, '');
-    String he = _homeErrors.toString().padLeft(2, '');
+    String hr = homeRuns.toString().padLeft(2, '');
+    String hh = homeHits.toString().padLeft(2, '');
+    String he = homeErrors.toString().padLeft(2, '');
 
-    String inning = _inning.toString().padLeft(2, '');
-
-    return '$_away,$_home,$ar,$ah,$ae,$hr,$hh,$he,$inning';
+    return '$away,$home,$ar,$ah,$ae,$hr,$hh,$he,$inning,$status';
   }
 
   bool isEmpty() {
-    return _away == 0;
+    return away == 0;
   }
 }
