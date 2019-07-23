@@ -1,16 +1,13 @@
 # odds
 
-A new Flutter project.
+This is a Flutter app that displays real time (ok, delayed 10 minutes) box scores of today's Major League Baseball games.
 
-## Getting Started
+## Home Page - select desired league
+<img width="200" src="./doc/home.png" alt="home page : select National or American League"/>
 
-This project is a starting point for a Flutter application.
+## Select a Game to View
+<img width="200" src="./doc/select.png" alt="select a game from the list"/>
 
-A few resources to get you started if this is your first Flutter project:
+## Box Score
+<img width="200" src="./doc/boxscore.png" alt="displays live box score"/>
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
