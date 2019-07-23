@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/bloc.dart';
 import '../constants/constants.dart' as constants;
-import '../models/team_model.dart';
-import '../models/game_model.dart';
+import '../models/models.dart' as models;
 
 class TeamsByLeague extends StatelessWidget {
   final String _league;
-  final List<Team> _teams;
+  final List<models.Team> _teams;
 
-  TeamsByLeague(this._league) : _teams = TeamData().getTeamsByLeague(_league);
+  TeamsByLeague(this._league) : _teams = models.getTeamsByLeague(_league);
 
   @override
   @override
@@ -32,11 +31,11 @@ class TeamsByLeague extends StatelessWidget {
 class AndroidTeamItem extends StatelessWidget {
   const AndroidTeamItem({
     Key key,
-    @required Team team,
+    @required models.Team team,
   })  : _team = team,
         super(key: key);
 
-  final Team _team;
+  final models.Team _team;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +46,7 @@ class AndroidTeamItem extends StatelessWidget {
         builder: (BuildContext context, GamesState state) {
           // find if team has a game
           int id = _team.id;
-          Game game;
+          models.Game game;
 
           if (state is GamesLoaded) {
             game = state.games.getGameByTeam(id);
@@ -55,11 +54,11 @@ class AndroidTeamItem extends StatelessWidget {
             state.games.games.forEach((g) {
               int hid = g.homeId;
               int aid = g.awayId;
-              Team home = TeamData().getTeamById(hid);
+              models.Team home = models.getTeamById(hid);
               if (home == null) {
                 print("home: $hid");
               }
-              Team away = TeamData().getTeamById(aid);
+              models.Team away = models.getTeamById(aid);
               if (away == null) {
                 print("away: $aid");
               }
@@ -94,11 +93,11 @@ class AndroidTeamItem extends StatelessWidget {
 class AndroidGameitem extends StatelessWidget {
   const AndroidGameitem({
     Key key,
-    @required Team team,
+    @required models.Team team,
   })  : _team = team,
         super(key: key);
 
-  final Team _team;
+  final models.Team _team;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +108,7 @@ class AndroidGameitem extends StatelessWidget {
         builder: (BuildContext context, GamesState state) {
           // find if team has a game
           int id = _team.id;
-          Game game;
+          models.Game game;
 
           if (state is GamesLoaded) {
             game = state.games.getGameByTeam(id);
@@ -117,11 +116,11 @@ class AndroidGameitem extends StatelessWidget {
             state.games.games.forEach((g) {
               int hid = g.homeId;
               int aid = g.awayId;
-              Team home = TeamData().getTeamById(hid);
+              models.Team home = models.getTeamById(hid);
               if (home == null) {
                 print("home: $hid");
               }
-              Team away = TeamData().getTeamById(aid);
+              models.Team away = models.getTeamById(aid);
               if (away == null) {
                 print("away: $aid");
               }

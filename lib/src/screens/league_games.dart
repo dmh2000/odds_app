@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:odds/src/constants/constants.dart';
-import '../bloc/bloc.dart';
-import '../models/team_model.dart';
-import '../models/game_model.dart';
+import '../bloc/bloc.dart' as bloc;
+import '../models/models.dart' as models;
 import '../constants/constants.dart' as constants;
+import '../constants/device_data.dart' as device;
 
 class GamesByLeague extends StatelessWidget {
   final String _league;
@@ -14,13 +13,13 @@ class GamesByLeague extends StatelessWidget {
   @override
   @override
   Widget build(BuildContext context) {
-    final GamesBloc _gamesBloc = BlocProvider.of<GamesBloc>(context);
+    final bloc.GamesBloc _gamesBloc = BlocProvider.of<bloc.GamesBloc>(context);
 
-    return BlocBuilder<GamesEvent, GamesState>(
+    return BlocBuilder<bloc.GamesEvent, bloc.GamesState>(
       bloc: _gamesBloc,
-      builder: (context, GamesState state) {
-        List<Game> leagueGames;
-        if (state is GamesLoaded) {
+      builder: (context, bloc.GamesState state) {
+        List<models.Game> leagueGames;
+        if (state is bloc.GamesLoaded) {
           leagueGames = gamesInLeague(state.games.games);
         }
         return Scaffold(
@@ -29,7 +28,7 @@ class GamesByLeague extends StatelessWidget {
           ),
           body: ListView.builder(
             itemBuilder: (BuildContext context, int index) {
-              Game game = leagueGames[index];
+              models.Game game = leagueGames[index];
               return AndroidGameItem(
                 game: game,
               );
@@ -41,32 +40,33 @@ class GamesByLeague extends StatelessWidget {
     );
   }
 
-  List<Game> gamesInLeague(List<Game> games) {
+  List<models.Game> gamesInLeague(List<models.Game> games) {
     // filter
-    return games.where((Game game) {
-      Team home = TeamData().getTeamById(game.homeId);
-      Team away = TeamData().getTeamById(game.awayId);
+    return games.where((models.Game game) {
+      models.Team home = models.getTeamById(game.homeId);
+      models.Team away = models.getTeamById(game.awayId);
       return (home.league == _league) || (away.league == _league);
     }).toList();
   }
 }
 
 class AndroidGameItem extends StatelessWidget {
-  final Game game;
-  final BoxScoreBloc _boxScoreBloc = BoxScoreBloc();
+  final models.Game game;
 
   AndroidGameItem({
-    @required Game game,
+    @required models.Game game,
     Key key,
   })  : game = game,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final bloc.BoxScoreBloc _boxScoreBloc =
+        BlocProvider.of<bloc.BoxScoreBloc>(context);
+
     // get data about team
-    TeamData td = TeamData();
-    Team home = td.getTeamById(game.homeId);
-    Team away = td.getTeamById(game.awayId);
+    models.Team home = models.getTeamById(game.homeId);
+    models.Team away = models.getTeamById(game.awayId);
 
     // change 24 hour time to AM/PM
     String ampm;
@@ -86,45 +86,42 @@ class AndroidGameItem extends StatelessWidget {
     String minute = game.startTime.minute.toString().padLeft(2, '0');
     String start = '$hour:$minute $ampm $interleague';
 
-    return BlocProvider(
-      builder: (context) => _boxScoreBloc,
-      child: GestureDetector(
-        onTap: () {
-          // start fetch of game box score
-          _boxScoreBloc
-              .dispatch(GetBoxScore(awayId: game.awayId, homeId: game.homeId));
+    return GestureDetector(
+      onTap: () {
+        // start fetch of game box score
+        _boxScoreBloc.dispatch(
+            bloc.GetBoxScore(awayId: game.awayId, homeId: game.homeId));
 
-          // route to the selected game box score
-          Navigator.pushNamed(context, constants.routeGameBox, arguments: game);
-        },
-        child: Card(
-          margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  awayTeam(team: away),
-                  Text(
-                    'At',
-                    style: atTextStyle,
-                  ),
-                  homeTeam(team: home),
-                ],
-              ),
-              Text(
-                start,
-                style: constants.timeTextStyle,
-              ),
-            ],
-          ),
+        // route to the selected game box score
+        Navigator.pushNamed(context, constants.routeGameBox, arguments: game);
+      },
+      child: Card(
+        margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                awayTeam(team: away),
+                Text(
+                  'At',
+                  style: device.deviceData.atTextStyle,
+                ),
+                homeTeam(team: home),
+              ],
+            ),
+            Text(
+              start,
+              style: device.deviceData.timeTextStyle,
+            ),
+          ],
         ),
       ),
     );
   }
 
   Widget awayTeam({
-    @required Team team,
+    @required models.Team team,
   }) {
     return Expanded(
       child: Container(
@@ -136,11 +133,12 @@ class AndroidGameItem extends StatelessWidget {
               margin: EdgeInsets.only(right: 10.0),
               child: Text(
                 team.name,
-                style: activeTextStyle,
+                style: device.deviceData.activeTextStyle,
               ),
             ),
             CircleAvatar(
-              backgroundImage: AssetImage(team.icon),
+              backgroundImage:
+                  AssetImage(device.deviceData.imageScale(team.icon)),
             ),
           ],
         ),
@@ -150,7 +148,7 @@ class AndroidGameItem extends StatelessWidget {
 }
 
 Widget homeTeam({
-  @required Team team,
+  @required models.Team team,
 }) {
   return Expanded(
     child: Container(
@@ -159,13 +157,14 @@ Widget homeTeam({
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           CircleAvatar(
-            backgroundImage: AssetImage(team.icon),
+            backgroundImage:
+                AssetImage(device.deviceData.imageScale(team.icon)),
           ),
           Container(
             padding: EdgeInsets.only(left: 10.0),
             child: Text(
               team.name,
-              style: activeTextStyle,
+              style: device.deviceData.activeTextStyle,
             ),
           ),
         ],

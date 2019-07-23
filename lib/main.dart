@@ -11,27 +11,34 @@ void main() => runApp(OddsApp());
 
 class OddsApp extends StatelessWidget {
   final GamesBloc _gamesBloc = GamesBloc();
+  final BoxScoreBloc _boxBloc = BoxScoreBloc();
+
   @override
   Widget build(BuildContext context) {
     // load the games immediately
     _gamesBloc.dispatch(GetGames());
+
+    // next the bloc providers
     return BlocProvider(
       builder: (context) => _gamesBloc,
-      child: MaterialApp(
-          title: "Today's Games",
-          theme: ThemeData(
-            brightness: Brightness.light,
-          ),
-          initialRoute: constants.routeHome,
-          routes: {
-            constants.routeHome: (context) =>
-                SelectLeague(title: "Today's Games"),
-            // constants.routeNational: (context) => TeamsByLeague(leagueNational),
-            // constants.routeAmerican: (context) => TeamsByLeague(leagueAmerican),
-            constants.routeNational: (context) => GamesByLeague(leagueNational),
-            constants.routeAmerican: (context) => GamesByLeague(leagueAmerican),
-            constants.routeGameBox: (context) => BoxScore(),
-          }),
+      child: BlocProvider(
+        builder: (context) => _boxBloc,
+        child: MaterialApp(
+            title: "Today's Games",
+            theme: ThemeData(
+              brightness: Brightness.light,
+            ),
+            initialRoute: constants.routeHome,
+            routes: {
+              constants.routeHome: (context) =>
+                  SelectLeague(title: "Today's Games"),
+              constants.routeNational: (context) =>
+                  GamesByLeague(leagueNational),
+              constants.routeAmerican: (context) =>
+                  GamesByLeague(leagueAmerican),
+              constants.routeGameBox: (context) => BoxScore(),
+            }),
+      ),
     );
   }
 }

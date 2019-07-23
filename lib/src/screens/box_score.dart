@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/bloc.dart' as bloc;
 import '../models/models.dart' as models;
-import '../constants/constants.dart' as constants;
+import '../constants/device_data.dart' as device;
 
 //TODO show box score
 class BoxScore extends StatelessWidget {
@@ -29,16 +29,7 @@ class BoxScore extends StatelessWidget {
             } else if (state is bloc.BoxScoreLoading) {
               return loading();
             } else if (state is bloc.BoxScoreLoaded) {
-              if (state.boxScore.isEmpty()) {
-                return Center(
-                  child: Text(
-                    'No Games Today! Try Again Tomorrow!',
-                    style: constants.homeTextStyle,
-                  ),
-                );
-              } else {
-                return boxScoreWidget(state.boxScore, game);
-              }
+              return boxScoreWidget(state.boxScore, game);
             } else {
               return null;
             }
@@ -54,8 +45,8 @@ class BoxScore extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Text(
-          "Checking For Today's Games",
-          style: constants.homeTextStyle,
+          "Loading game data",
+          style: device.deviceData.homeTextStyle,
         ),
         CircularProgressIndicator(),
       ],
@@ -63,10 +54,8 @@ class BoxScore extends StatelessWidget {
   }
 
   Widget boxScoreWidget(models.BoxScoreModel boxScore, models.Game game) {
-    final models.TeamData td = models.TeamData();
-
-    models.Team home = td.getTeamById(game.homeId);
-    models.Team away = td.getTeamById(game.awayId);
+    models.Team home = models.getTeamById(game.homeId);
+    models.Team away = models.getTeamById(game.awayId);
     String awayText = '${away.location} ${away.name}';
     String homeText = '${home.location} ${home.name}';
     String gameText = '$awayText at $homeText';
@@ -89,50 +78,42 @@ class BoxScore extends StatelessWidget {
     String minute = game.startTime.minute.toString().padLeft(2, '0');
     String gameTime = '$hour:$minute $ampm $interleague';
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(gameText),
-      ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(
-                top: 20.0,
-                bottom: 20.0,
-              ),
-              child: Text(
-                gameTime,
-                style: constants.gameTextStyle,
-              ),
+    return Center(
+      child: Column(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(
+              top: 20.0,
+              bottom: 20.0,
             ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20.0),
-              child: Column(
-                children: <Widget>[
-                  teamTitle(icon: away.icon, name: away.name),
-                  Text(
-                    'At',
-                    style: constants.gameTextStyle,
-                  ),
-                  teamTitle(icon: home.icon, name: home.name),
-                ],
-              ),
+            child: Text(
+              gameTime,
+              style: device.deviceData.gameTextStyle,
             ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20.0),
-              child: matchup(0, 0, 0, 0),
+          ),
+          Container(
+            margin: EdgeInsets.only(bottom: 20.0),
+            child: Column(
+              children: <Widget>[
+                teamTitle(icon: away.icon, name: away.name),
+                Text(
+                  'At',
+                  style: device.deviceData.gameTextStyle,
+                ),
+                teamTitle(icon: home.icon, name: home.name),
+              ],
             ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20.0),
-              child: score(
-                  game: game,
-                  awayName: awayText,
-                  homeName: homeText,
-                  inning: 0),
-            )
-          ],
-        ),
+          ),
+          Container(
+            margin: EdgeInsets.only(bottom: 20.0),
+            child: matchup(0, 0, 0, 0),
+          ),
+          Container(
+            margin: EdgeInsets.only(bottom: 20.0),
+            child: score(
+                game: game, awayName: awayText, homeName: homeText, inning: 0),
+          )
+        ],
       ),
     );
   }
@@ -142,13 +123,13 @@ class BoxScore extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         CircleAvatar(
-          backgroundImage: AssetImage(icon),
+          backgroundImage: AssetImage(device.deviceData.imageScale(icon)),
         ),
         Container(
           margin: EdgeInsets.only(left: 10.0),
           child: Text(
             name,
-            style: constants.gameTextStyle,
+            style: device.deviceData.gameTextStyle,
           ),
         ),
       ],
@@ -167,7 +148,7 @@ class BoxScore extends StatelessWidget {
         children: <Widget>[
           Text(
             'Matchup',
-            style: constants.gameTextStyle,
+            style: device.deviceData.gameTextStyle,
           ),
           Container(
             margin: EdgeInsets.only(left: 20.0, right: 20.0),
@@ -180,7 +161,7 @@ class BoxScore extends StatelessWidget {
                         margin: EdgeInsets.only(top: 10.0, right: 10.0),
                         child: Text(
                           'Home',
-                          style: constants.matchupTextStyle,
+                          style: device.deviceData.matchupTextStyle,
                           textAlign: TextAlign.end,
                         ),
                       ),
@@ -191,7 +172,7 @@ class BoxScore extends StatelessWidget {
                         margin: EdgeInsets.only(top: 10.0),
                         child: Text(
                           home,
-                          style: constants.matchupTextStyle,
+                          style: device.deviceData.matchupTextStyle,
                         ),
                       ),
                       flex: 1,
@@ -201,7 +182,7 @@ class BoxScore extends StatelessWidget {
                         margin: EdgeInsets.only(top: 10.0, right: 10.0),
                         child: Text(
                           'Over',
-                          style: constants.matchupTextStyle,
+                          style: device.deviceData.matchupTextStyle,
                           textAlign: TextAlign.end,
                         ),
                       ),
@@ -212,7 +193,7 @@ class BoxScore extends StatelessWidget {
                         margin: EdgeInsets.only(top: 10.0),
                         child: Text(
                           over.toString().padLeft(3, '0'),
-                          style: constants.matchupTextStyle,
+                          style: device.deviceData.matchupTextStyle,
                         ),
                       ),
                       flex: 1,
@@ -226,7 +207,7 @@ class BoxScore extends StatelessWidget {
                         margin: EdgeInsets.only(top: 10.0, right: 10.0),
                         child: Text(
                           'Away',
-                          style: constants.matchupTextStyle,
+                          style: device.deviceData.matchupTextStyle,
                           textAlign: TextAlign.end,
                         ),
                       ),
@@ -237,7 +218,7 @@ class BoxScore extends StatelessWidget {
                         margin: EdgeInsets.only(top: 10.0),
                         child: Text(
                           away,
-                          style: constants.matchupTextStyle,
+                          style: device.deviceData.matchupTextStyle,
                         ),
                       ),
                       flex: 1,
@@ -247,7 +228,7 @@ class BoxScore extends StatelessWidget {
                         margin: EdgeInsets.only(top: 10.0, right: 10.0),
                         child: Text(
                           'Under',
-                          style: constants.matchupTextStyle,
+                          style: device.deviceData.matchupTextStyle,
                           textAlign: TextAlign.end,
                         ),
                       ),
@@ -258,7 +239,7 @@ class BoxScore extends StatelessWidget {
                         margin: EdgeInsets.only(top: 10.0),
                         child: Text(
                           under.toString().padLeft(3, '0'),
-                          style: constants.matchupTextStyle,
+                          style: device.deviceData.matchupTextStyle,
                         ),
                       ),
                       flex: 1,
@@ -278,6 +259,11 @@ class BoxScore extends StatelessWidget {
       @required String awayName,
       @required homeName,
       @required int inning}) {
+    String status = game.playedStatus.toLowerCase();
+    if (status == 'unplayed') {
+      status = 'not started';
+    }
+
     return Container(
       margin: EdgeInsets.only(top: 30.0),
       child: Column(
@@ -285,7 +271,7 @@ class BoxScore extends StatelessWidget {
         children: <Widget>[
           Text(
             'Score',
-            style: constants.gameTextStyle,
+            style: device.deviceData.gameTextStyle,
           ),
           scoreRow(
             col2: 'R',
@@ -310,7 +296,7 @@ class BoxScore extends StatelessWidget {
           ),
           statusRow(
             col1: 'Status',
-            col2: game.playedStatus.toLowerCase(),
+            col2: status,
           ),
         ],
       ),
@@ -331,17 +317,16 @@ class BoxScore extends StatelessWidget {
             padding: EdgeInsets.only(left: 20.0),
             child: Text(
               col1,
-              style: constants.gameTextStyle,
+              style: device.deviceData.gameTextStyle,
             ),
           ),
           flex: 5,
         ),
         Expanded(
           child: Container(
-            margin: EdgeInsets.only(top: 10.0),
             child: Text(
               col2,
-              style: constants.gameTextStyle,
+              style: device.deviceData.gameTextStyle,
             ),
           ),
           flex: 1,
@@ -350,7 +335,7 @@ class BoxScore extends StatelessWidget {
           child: Container(
             child: Text(
               col3,
-              style: constants.gameTextStyle,
+              style: device.deviceData.gameTextStyle,
             ),
           ),
           flex: 1,
@@ -359,7 +344,7 @@ class BoxScore extends StatelessWidget {
           child: Container(
             child: Text(
               col4,
-              style: constants.gameTextStyle,
+              style: device.deviceData.gameTextStyle,
             ),
           ),
           flex: 1,
@@ -380,7 +365,7 @@ class BoxScore extends StatelessWidget {
             padding: EdgeInsets.only(left: 20.0),
             child: Text(
               col1,
-              style: constants.statusTextStyle,
+              style: device.deviceData.gameTextStyle,
             ),
           ),
           flex: 2,
@@ -390,7 +375,7 @@ class BoxScore extends StatelessWidget {
             margin: EdgeInsets.only(top: 10.0),
             child: Text(
               col2,
-              style: constants.gameTextStyle,
+              style: device.deviceData.gameTextStyle,
             ),
           ),
           flex: 1,

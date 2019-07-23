@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:odds/src/models/models.dart' as models;
 import 'package:odds/src/constants/teams.dart';
-import 'package:odds/src/models/team_model.dart';
 import 'package:odds/main.dart';
 
 final List<String> teamNames = [
@@ -70,48 +70,47 @@ final List<String> locations = [
 ];
 void main() {
   testWidgets('Team Information Test', (WidgetTester tester) async {
-    TeamData teams = TeamData();
-    List<Team> t;
+    List<models.Team> t;
 
     await tester.pumpWidget(OddsApp());
 
     teamNames.forEach((name) {
       // names should match
-      Team a = teams.getTeamByName(name);
+      models.Team a = models.getTeamByName(name);
       expect(a.name, name);
       // image name should match
       String lt = a.name.toLowerCase();
-      expect('assets/$lt.png', a.image);
+      expect('assets/large/$lt.png', 'assets/large/${a.image}');
     });
 
     // should be 15 national league teams
 
-    t = teams.getTeamsByLeague(leagueNational);
+    t = models.getTeamsByLeague(leagueNational);
     expect(t.length, 15);
 
     // should be 5 teams in each division
-    t = teams.getTeamsByLeagueAndDivision(leagueNational, divisionEast);
+    t = models.getTeamsByLeagueAndDivision(leagueNational, divisionEast);
     expect(t.length, 5);
 
-    t = teams.getTeamsByLeagueAndDivision(leagueNational, divisionCentral);
+    t = models.getTeamsByLeagueAndDivision(leagueNational, divisionCentral);
     expect(t.length, 5);
 
-    t = teams.getTeamsByLeagueAndDivision(leagueNational, divisionWest);
+    t = models.getTeamsByLeagueAndDivision(leagueNational, divisionWest);
     expect(t.length, 5);
 
     // should be 15 american league teams
 
-    t = teams.getTeamsByLeague(leagueAmerican);
+    t = models.getTeamsByLeague(leagueAmerican);
     expect(t.length, 15);
 
     // should be 5 teams in each division
-    t = teams.getTeamsByLeagueAndDivision(leagueAmerican, divisionEast);
+    t = models.getTeamsByLeagueAndDivision(leagueAmerican, divisionEast);
     expect(t.length, 5);
 
-    t = teams.getTeamsByLeagueAndDivision(leagueAmerican, divisionCentral);
+    t = models.getTeamsByLeagueAndDivision(leagueAmerican, divisionCentral);
     expect(t.length, 5);
 
-    t = teams.getTeamsByLeagueAndDivision(leagueAmerican, divisionWest);
+    t = models.getTeamsByLeagueAndDivision(leagueAmerican, divisionWest);
     expect(t.length, 5);
   });
 }

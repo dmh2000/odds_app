@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../models/game_model.dart';
-import '../constants/constants.dart' as constants;
+
 import '../bloc/bloc.dart' as bloc;
+import '../constants/constants.dart' as constants;
+import '../models/game_model.dart';
+import '../constants/device_data.dart' as device;
 
 class SelectLeague extends StatefulWidget {
   SelectLeague({Key key, this.title}) : super(key: key);
@@ -21,6 +23,11 @@ class _SelectLeagueState extends State<SelectLeague> {
   @override
   Widget build(BuildContext context) {
     final bloc.GamesBloc _gamesBloc = BlocProvider.of<bloc.GamesBloc>(context);
+    final size = MediaQuery.of(context).size;
+
+    // this screen is always called first so initialize the global device data object
+    device.setDeviceType(size.width);
+    print(size);
 
     return Scaffold(
       appBar: AppBar(
@@ -41,7 +48,7 @@ class _SelectLeagueState extends State<SelectLeague> {
                 return Center(
                   child: Text(
                     'No Games Today! Try Again Tomorrow!',
-                    style: constants.homeTextStyle,
+                    style: device.deviceData.homeTextStyle,
                   ),
                 );
               } else {
@@ -63,7 +70,7 @@ class _SelectLeagueState extends State<SelectLeague> {
       children: <Widget>[
         Text(
           "Checking For Today's Games",
-          style: constants.homeTextStyle,
+          style: device.deviceData.homeTextStyle,
         ),
         CircularProgressIndicator(),
       ],
@@ -79,50 +86,47 @@ class SelectLeagueWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final GamesBloc gamesBloc = BlocProvider.of<GamesBloc>(context);
-    final bloc.BoxScoreBloc _boxScoreBloc = bloc.BoxScoreBloc();
-    return BlocProvider(
-      builder: (context) => _boxScoreBloc,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                print(constants.routeNational);
-                Navigator.pushNamed(context, constants.routeNational);
-              },
-              child: Column(
-                children: <Widget>[
-                  Image(
-                    image: AssetImage(constants.imageNational),
-                  ),
-                  Text(
-                    constants.titleNational,
-                    style: constants.buttonTextStyle,
-                  ),
-                ],
-              ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          GestureDetector(
+            onTap: () {
+              print(constants.routeNational);
+              Navigator.pushNamed(context, constants.routeNational);
+            },
+            child: Column(
+              children: <Widget>[
+                Image(
+                  image: AssetImage(
+                      device.deviceData.imageScale(constants.imageNational)),
+                ),
+                Text(
+                  constants.titleNational,
+                  style: device.deviceData.buttonTextStyle,
+                ),
+              ],
             ),
-            GestureDetector(
-              onTap: () {
-                print(constants.routeAmerican);
-                Navigator.pushNamed(context, constants.routeAmerican);
-              },
-              child: Column(
-                children: <Widget>[
-                  Image(
-                    image: AssetImage(constants.imageAmerican),
-                  ),
-                  Text(
-                    constants.titleAmerican,
-                    style: constants.buttonTextStyle,
-                  ),
-                ],
-              ),
+          ),
+          GestureDetector(
+            onTap: () {
+              print(constants.routeAmerican);
+              Navigator.pushNamed(context, constants.routeAmerican);
+            },
+            child: Column(
+              children: <Widget>[
+                Image(
+                  image: AssetImage(
+                      device.deviceData.imageScale(constants.imageAmerican)),
+                ),
+                Text(
+                  constants.titleAmerican,
+                  style: device.deviceData.buttonTextStyle,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

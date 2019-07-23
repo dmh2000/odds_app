@@ -24,6 +24,9 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/large/
+    - assets/small/
+
   # fonts
   fonts:
     - family: Hanalei
