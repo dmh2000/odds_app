@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart' as bloc;
 import './bloc.dart';
 import '../models/models.dart' as models;
-import '../models/team_model.dart';
 import 'apikey.dart' as apiKey;
 
 class BoxScoreBloc extends bloc.Bloc<BoxScoreEvent, BoxScoreState> {
@@ -21,7 +20,7 @@ class BoxScoreBloc extends bloc.Bloc<BoxScoreEvent, BoxScoreState> {
       yield BoxScoreLoading();
 
       // request game data from server
-      final http.Response rsp = await _getBoxScore(event.awayId, event.homeId);
+      final http.Response rsp = await _getBoxScore(event.game);
 
       // quit if not status 200
       if (rsp.statusCode != 200) {
@@ -36,7 +35,7 @@ class BoxScoreBloc extends bloc.Bloc<BoxScoreEvent, BoxScoreState> {
       }
     } else if (event is UpdateBoxScore) {
       // request game data from server
-      final http.Response rsp = await _getBoxScore(event.awayId, event.homeId);
+      final http.Response rsp = await _getBoxScore(event.game);
 
       if (rsp.statusCode != 200) {
         // no content or error
@@ -55,18 +54,16 @@ class BoxScoreBloc extends bloc.Bloc<BoxScoreEvent, BoxScoreState> {
     }
   }
 
-  Future<http.Response> _getBoxScore(int away, int home) {
+  Future<http.Response> _getBoxScore(models.Game game) {
     // construct the URL for todays games
     // https://api.mysportsfeeds.com/v2.1/pull/mlb/2019-regular/games/20190613-CHC-LAD/boxscore.xml
     String url = '${apiKey.url}/games';
 
-    String awayAbbr = getTeamById(away).abbr;
-    String homeAbbr = getTeamById(home).abbr;
-
     DateTime date = DateTime.now();
     String month = date.month.toString().padLeft(2, '0');
     String day = date.day.toString().padLeft(2, '0');
-    url = '$url/2019$month$day-$awayAbbr-$homeAbbr/boxscore.json';
+    url = '$url/2019$month$day-${game.urlSuffix}/boxscore.json';
+    print(url);
 
     Map<String, String> headers = {
       'Authorization': 'Basic ${apiKey.key}',

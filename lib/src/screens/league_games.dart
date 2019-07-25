@@ -69,28 +69,19 @@ class AndroidGameItem extends StatelessWidget {
     models.Team away = models.getTeamById(game.awayId);
 
     // change 24 hour time to AM/PM
-    String ampm;
-    int hour24 = game.startTime.hour;
-    if (hour24 >= 12) {
-      hour24 -= 12;
-      ampm = 'PM';
-    } else {
-      ampm = 'AM';
-    }
+    // change 24 hour time to AM/PM
+    String startTime = game.timeString;
 
     // annotate if it is an interleage game
     String interleague = (home.league != away.league) ? '(IL)' : '';
 
     // construct the start time string
-    String hour = hour24.toString().padLeft(2);
-    String minute = game.startTime.minute.toString().padLeft(2, '0');
-    String start = '$hour:$minute $ampm $interleague';
+    String start = '$startTime $interleague';
 
     return GestureDetector(
       onTap: () {
         // start fetch of game box score
-        _boxScoreBloc.dispatch(
-            bloc.GetBoxScore(awayId: game.awayId, homeId: game.homeId));
+        _boxScoreBloc.dispatch(bloc.GetBoxScore(game: game));
 
         // route to the selected game box score
         Navigator.pushNamed(context, constants.routeGameBox, arguments: game);

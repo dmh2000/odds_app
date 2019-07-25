@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import '../models/game_model.dart';
 
 @immutable
 abstract class BoxScoreEvent extends Equatable {
@@ -7,13 +8,11 @@ abstract class BoxScoreEvent extends Equatable {
 }
 
 class GetBoxScore extends BoxScoreEvent {
-  final int awayId;
-  final int homeId;
-  GetBoxScore({@required this.awayId, @required this.homeId}) : super();
+  final Game game;
+  GetBoxScore({@required this.game}) : super();
 }
 
 class UpdateBoxScore extends BoxScoreEvent {
-  final int awayId;
-  final int homeId;
-  UpdateBoxScore({@required this.awayId, @required this.homeId}) : super();
+  final Game game;
+  UpdateBoxScore({@required this.game}) : super();
 }

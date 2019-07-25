@@ -41,4 +41,10 @@ class OddsApp extends StatelessWidget {
       ),
     );
   }
+
+  dispose() {
+    // dispose of the blocs
+    _gamesBloc.dispose();
+    _boxBloc.dispose();
+  }
 }

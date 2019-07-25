@@ -62,28 +62,19 @@ class BoxScore extends StatelessWidget {
     models.Team away = models.getTeamById(game.awayId);
 
     // change 24 hour time to AM/PM
-    String ampm;
-    int hour24 = game.startTime.hour;
-    if (hour24 >= 12) {
-      hour24 -= 12;
-      ampm = 'PM';
-    } else {
-      ampm = 'AM';
-    }
+    String startTime = game.timeString;
 
     // annotate if it is an interleage game
     String interleague = (home.league != away.league) ? '(IL)' : '';
 
     // construct the start time string
-    String hour = hour24.toString().padLeft(2);
-    String minute = game.startTime.minute.toString().padLeft(2, '0');
-    String gameTime = '$hour:$minute $ampm $interleague';
+    String gameTime = '$startTime $interleague';
     double boxMargin = device.deviceData.boxMargin;
     TextStyle gameTextStyle = device.deviceData.gameTextStyle;
     return RefreshIndicator(
       onRefresh: () async {
         boxScoreBloc.dispatch(
-          bloc.UpdateBoxScore(awayId: away.id, homeId: home.id),
+          bloc.UpdateBoxScore(game: game),
         );
       },
       child: ListView(
