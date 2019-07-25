@@ -39,13 +39,12 @@ class BoxScoreBloc extends bloc.Bloc<BoxScoreEvent, BoxScoreState> {
 
       if (rsp.statusCode != 200) {
         // no content or error
-        print(rsp.reasonPhrase);
+        print('${rsp.statusCode} : ${rsp.reasonPhrase}');
         yield BoxScoreLoaded(models.BoxScoreModel.empty());
       } else {
         // got an update
-        print('updated');
 
-        // load the sames object
+        // load the box score object
         models.BoxScoreModel boxScore = models.BoxScoreModel.fromJSON(rsp.body);
 
         // BoxScore are loaded
@@ -63,7 +62,6 @@ class BoxScoreBloc extends bloc.Bloc<BoxScoreEvent, BoxScoreState> {
     String month = date.month.toString().padLeft(2, '0');
     String day = date.day.toString().padLeft(2, '0');
     url = '$url/2019$month$day-${game.urlSuffix}/boxscore.json';
-    print(url);
 
     Map<String, String> headers = {
       'Authorization': 'Basic ${apiKey.key}',

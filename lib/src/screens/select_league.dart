@@ -27,14 +27,13 @@ class _SelectLeagueState extends State<SelectLeague> {
 
     // this screen is always called first so initialize the global device data object
     device.setDeviceType(mq.size.width);
-    // print(mq.size.width);
-    // print(mq.size.height);
-    // print(mq.devicePixelRatio);
-    // print(mq.textScaleFactor);
+
+    DateTime now = DateTime.now();
+    String date = '${now.month}/${now.day}/${now.year}';
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Today is $date'),
       ),
       body: BlocListener(
         bloc: _gamesBloc,
@@ -95,7 +94,6 @@ class SelectLeagueWidget extends StatelessWidget {
         children: <Widget>[
           GestureDetector(
             onTap: () {
-              print(constants.routeNational);
               Navigator.pushNamed(context, constants.routeNational);
             },
             child: Column(
@@ -113,7 +111,6 @@ class SelectLeagueWidget extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              print(constants.routeAmerican);
               Navigator.pushNamed(context, constants.routeAmerican);
             },
             child: Column(

@@ -12,10 +12,14 @@ class BoxScore extends StatelessWidget {
     final bloc.BoxScoreBloc _boxScoreBloc =
         BlocProvider.of<bloc.BoxScoreBloc>(context);
     final models.Game game = ModalRoute.of(context).settings.arguments;
+
+    DateTime now = DateTime.now();
+    String date = '${now.month}/${now.day}/${now.year}';
+
     // final models.TeamData td = models.TeamData();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Box Score'),
+        title: Text('Box Score : $date'),
       ),
       body: BlocListener(
         bloc: _boxScoreBloc,

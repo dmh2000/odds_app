@@ -3,21 +3,29 @@ import 'dart:collection';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+@immutable
 class Game extends Equatable {
   final int gameId;
   final int homeId;
   final int awayId;
   final String venue;
-  final DateTime startTime;
+  final DateTime startTime; // time is Local
   final String playedStatus;
   final String awayAbbr;
   final String homeAbbr;
-  int hdr;
+  final int hdr;
 
-  Game(this.gameId, this.homeId, this.awayId, this.venue, this.startTime,
-      this.playedStatus, this.awayAbbr, this.homeAbbr)
-      : hdr = 0,
-        super([gameId, startTime]); // equatable uses these two for equality
+  Game(
+      {this.gameId,
+      this.homeId,
+      this.awayId,
+      this.venue,
+      this.startTime,
+      this.playedStatus,
+      this.awayAbbr,
+      this.homeAbbr,
+      this.hdr})
+      : super([gameId, startTime]); // equatable uses these two for equality
 
   String toString() {
     return '$gameId:$homeId:$awayId:$venue:$startTime:$playedStatus,$awayAbbr,$homeAbbr,$hdr';
@@ -25,7 +33,7 @@ class Game extends Equatable {
 
   String get timeString {
     // change 24 hour time to local AM/PM time
-    DateTime localTime = startTime.toLocal();
+    DateTime localTime = startTime;
     int hour24 = localTime.hour;
     int minute24 = localTime.minute;
     String hour;
@@ -66,65 +74,102 @@ class Game extends Equatable {
   }
 }
 
+// temporary class to hold game data so the Game can be immutable
+class GameT {
+  int gameId;
+  int homeId;
+  int awayId;
+  String venue;
+  DateTime startTime;
+  String playedStatus;
+  String awayAbbr;
+  String homeAbbr;
+  int hdr;
+
+  GameT(this.gameId, this.homeId, this.awayId, this.venue, this.startTime,
+      this.playedStatus, this.awayAbbr, this.homeAbbr)
+      : hdr = 0;
+}
+
 @immutable
 class Games extends Equatable {
   final List<Game> games;
 
-  Games({@required this.games}) : super([games]) {
-    // update the double headers in the list
-    updateDoubleHeaders();
-  }
+  Games({@required this.games}) : super([games]);
 
   // process the json data and create Games object
   factory Games.fromJson(String json) {
-    List<Game> g;
-
-    // get current time to identify 'today'
-    DateTime now = DateTime.now();
-
     // convert response to game model
     dynamic obj = convert.json.decode(json);
 
+    // convert json to list of GameT's
+    List<GameT> gt = parseJson(obj);
+
+    // keep only games that are played today
+    // get current LOCAL time to identify 'today'
+    // maybe not necessary now that times are all local
+    DateTime now = DateTime.now(); // local time
+    gt = gt.where((v) {
+      return now.day == v.startTime.day; // local time
+    }).toList();
+
+    // update the hdr field
+    gt = updateDoubleHeaders(gt);
+
+    // now create a List<Game> that is immutable
+    // Game({this.gameId, this.homeId, this.awayId, this.venue, this.startTime,
+    //this.playedStatus, this.awayAbbr, this.homeAbbr,this.hdr})
+    List<Game> games = gt.map((v) {
+      return Game(
+          gameId: v.gameId,
+          homeId: v.homeId,
+          awayId: v.awayId,
+          venue: v.venue,
+          startTime: v.startTime,
+          playedStatus: v.playedStatus,
+          awayAbbr: v.awayAbbr,
+          homeAbbr: v.homeAbbr,
+          hdr: v.hdr);
+    }).toList();
+
+    // invoke default constructor
+    return Games(games: games);
+  }
+
+  static List<GameT> parseJson(js) {
     // extract list of games
-    List<dynamic> d = obj['games'].map((dynamic v) {
+    List<dynamic> d = js['games'].map((dynamic v) {
       var sched = v['schedule'];
       int id = sched['id'];
       int homeId = sched['homeTeam']['id'];
       int awayId = sched['awayTeam']['id'];
-      DateTime startTime = DateTime.parse(sched['startTime']);
+      DateTime startTime = DateTime.parse(sched['startTime']).toLocal();
       String status = sched['playedStatus'];
       String venue = sched['venue']['name'];
       String awayAbbr = sched['awayTeam']['abbreviation'];
       String homeAbbr = sched['homeTeam']['abbreviation'];
 
-      // print('$id,$homeId,$awayId,$hour:$minute,$status,$venueId,$status');
-      return Game(
+      return GameT(
           id, homeId, awayId, venue, startTime, status, awayAbbr, homeAbbr);
     }).toList(); // turn it into a list
 
-    // convert to list of games
-    g = List<Game>.from(d);
+    // convert to list of GameTs
+    List<GameT> gt = List<GameT>.from(d);
 
-    // keep only games that are played today
-    g = g.where((v) {
-      return now.day == v.startTime.day;
-    }).toList();
-
-    // invoke default constructor
-    return Games(games: g);
+    return gt;
   }
 
-  void updateDoubleHeaders() {
-    HashMap<String, Game> hmap = HashMap<String, Game>();
+  static List<GameT> updateDoubleHeaders(List<GameT> gt) {
+    HashMap<String, GameT> hmap = HashMap<String, GameT>();
 
-    games.forEach((b) {
+    gt.forEach((b) {
       String key = b.awayAbbr;
       print(key);
       // is there a duplicate already in the hash map
       if (hmap.containsKey(key)) {
         // the one already in the map gets hdr = 1
         // the new one gets hedr = 2
-        Game a = hmap[key];
+        GameT a = hmap[key];
         a.hdr = 1;
         b.hdr = 2;
       } else {
@@ -132,6 +177,8 @@ class Games extends Equatable {
         hmap[key] = b;
       }
     });
+
+    return gt;
   }
 
   bool isEmpty() {

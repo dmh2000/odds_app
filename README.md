@@ -17,6 +17,7 @@ The app shows the following screens:
 <img width="200" src="./doc/select.png" alt="select a game from the list"/>
 
   - all games active today are shown
+  - 'Today' means local time today. rolls over to next day at midnight local time.
   - scroll as needed
   - select a game to view box score
 

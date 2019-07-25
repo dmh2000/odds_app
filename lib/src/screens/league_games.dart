@@ -15,6 +15,9 @@ class GamesByLeague extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc.GamesBloc _gamesBloc = BlocProvider.of<bloc.GamesBloc>(context);
 
+    DateTime now = DateTime.now();
+    String date = '${now.month}/${now.day}/${now.year}';
+
     return BlocBuilder<bloc.GamesEvent, bloc.GamesState>(
       bloc: _gamesBloc,
       builder: (context, bloc.GamesState state) {
@@ -24,7 +27,7 @@ class GamesByLeague extends StatelessWidget {
         }
         return Scaffold(
           appBar: AppBar(
-            title: Text('$_league League'),
+            title: Text('$_league League : $date'),
           ),
           body: ListView.builder(
             itemBuilder: (BuildContext context, int index) {
