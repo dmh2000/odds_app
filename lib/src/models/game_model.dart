@@ -164,7 +164,6 @@ class Games extends Equatable {
 
     gt.forEach((b) {
       String key = b.awayAbbr;
-      print(key);
       // is there a duplicate already in the hash map
       if (hmap.containsKey(key)) {
         // the one already in the map gets hdr = 1
