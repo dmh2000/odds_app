@@ -105,13 +105,13 @@ class Games extends Equatable {
     // convert json to list of GameT's
     List<GameT> gt = parseJson(obj);
 
-    // keep only games that are played today
-    // get current LOCAL time to identify 'today'
-    // maybe not necessary now that times are all local
-    DateTime now = DateTime.now(); // local time
-    gt = gt.where((v) {
-      return now.day == v.startTime.day; // local time
-    }).toList();
+    // // keep only games that are played today
+    // // get current LOCAL time to identify 'today'
+    // // maybe not necessary now that times are all local
+    // DateTime now = DateTime.now(); // local time
+    // gt = gt.where((v) {
+    //   return now.day == v.startTime.day; // local time
+    // }).toList();
 
     // update the hdr field
     gt = updateDoubleHeaders(gt);

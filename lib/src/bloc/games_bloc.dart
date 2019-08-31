@@ -17,15 +17,19 @@ class GamesBloc extends bloc.Bloc<GamesEvent, GamesState> {
   ) async* {
     if (event is GetGames) {
       // notifiy loading
+      print('loading');
       yield GamesLoading();
 
       // request game data from server
-      final http.Response rsp = await _getTodaysGames();
+      final http.Response rsp = await _getGames(event.day);
+      print('games');
 
       // quit if not status 200
       if (rsp.statusCode != 200) {
+        print('empty');
         yield GamesLoaded(models.Games(games: []));
       } else {
+        print('loaded');
         // load the sames object
         models.Games games = models.Games.fromJson(rsp.body);
 
@@ -35,13 +39,13 @@ class GamesBloc extends bloc.Bloc<GamesEvent, GamesState> {
     }
   }
 
-  Future<http.Response> _getTodaysGames() {
+  Future<http.Response> _getGames(day) {
     // construct the URL for todays games
-    DateTime now = DateTime.now();
-    String today =
-        '${now.year}${now.month.toString().padLeft(2, '0')}${now.day.toString().padLeft(2, '0')}';
-    String url = '${apiKey.url}/date/$today/games.json?date=today';
-
+    String dayArg =
+        '${day.year}${day.month.toString().padLeft(2, '0')}${day.day.toString().padLeft(2, '0')}';
+    String url = '${apiKey.url}/date/$dayArg/games.json';
+    // String url = '${apiKey.url}/games.json?date=tomorrow';
+    print(url);
     Map<String, String> headers = {
       'Authorization': 'Basic ${apiKey.key}',
     };

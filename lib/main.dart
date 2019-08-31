@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:odds/src/constants/teams.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'src/constants/constants.dart' as constants;
+import 'src/screens/select_date.dart';
 import 'src/screens/select_league.dart';
 import 'src/screens/league_games.dart';
 import 'src/screens/box_score.dart';
@@ -15,9 +16,6 @@ class OddsApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // load the games immediately
-    _gamesBloc.dispatch(GetGames());
-
     // next the bloc providers
     return BlocProvider(
       builder: (context) => _gamesBloc,
@@ -28,10 +26,11 @@ class OddsApp extends StatelessWidget {
             theme: ThemeData(
               brightness: Brightness.light,
             ),
-            initialRoute: constants.routeHome,
+            initialRoute: constants.routeDate,
             routes: {
-              constants.routeHome: (context) =>
-                  SelectLeague(title: "Today's Games"),
+              constants.routeDate: (context) => SelectDate(),
+              constants.routeLeague: (context) =>
+                  SelectLeague(title: "Leagues"),
               constants.routeNational: (context) =>
                   GamesByLeague(leagueNational),
               constants.routeAmerican: (context) =>

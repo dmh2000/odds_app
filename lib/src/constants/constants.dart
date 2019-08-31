@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 // routes
-const String routeHome = 'home';
+const String routeLeague = 'league';
+const String routeDate = 'date';
 const String routeNational = 'national';
 const String routeAmerican = 'american';
 const String routeGameBox = 'gameBox';
@@ -13,6 +14,10 @@ const String titleAmerican = 'American League';
 // images
 const String imageNational = 'national.png';
 const String imageAmerican = 'american.png';
+
+const TextStyle daySelectTextStyle = TextStyle(
+  fontSize: 25.0,
+);
 
 const TextStyle buttonTextStyle = TextStyle(
   fontSize: 30.0,

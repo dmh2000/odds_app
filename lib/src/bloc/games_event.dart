@@ -7,5 +7,11 @@ abstract class GamesEvent extends Equatable {
 }
 
 class GetGames extends GamesEvent {
-  GetGames() : super();
+  final DateTime day;
+  GetGames({@required this.day}) : super();
+
+  @override
+  String toString() {
+    return day.toLocal().toString();
+  }
 }
