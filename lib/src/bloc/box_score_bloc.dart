@@ -24,7 +24,7 @@ class BoxScoreBloc extends bloc.Bloc<BoxScoreEvent, BoxScoreState> {
 
       // quit if not status 200
       if (rsp.statusCode != 200) {
-        print(rsp.reasonPhrase);
+        // its probably a future game so there is no data yet
         yield BoxScoreLoaded(models.BoxScoreModel.empty());
       } else {
         // load the sames object
@@ -38,8 +38,7 @@ class BoxScoreBloc extends bloc.Bloc<BoxScoreEvent, BoxScoreState> {
       final http.Response rsp = await _getBoxScore(event.game);
 
       if (rsp.statusCode != 200) {
-        // no content or error
-        print('${rsp.statusCode} : ${rsp.reasonPhrase}');
+        // probably a future game so there is no data yet
         yield BoxScoreLoaded(models.BoxScoreModel.empty());
       } else {
         // got an update
@@ -54,11 +53,11 @@ class BoxScoreBloc extends bloc.Bloc<BoxScoreEvent, BoxScoreState> {
   }
 
   Future<http.Response> _getBoxScore(models.Game game) {
-    // construct the URL for todays games
+    // construct the URL for the game
     // https://api.mysportsfeeds.com/v2.1/pull/mlb/2019-regular/games/20190613-CHC-LAD/boxscore.xml
     String url = '${apiKey.url}/games';
 
-    DateTime date = DateTime.now();
+    DateTime date = game.startTime;
     String month = date.month.toString().padLeft(2, '0');
     String day = date.day.toString().padLeft(2, '0');
     url = '$url/2019$month$day-${game.urlSuffix}/boxscore.json';

@@ -31,6 +31,13 @@ class Game extends Equatable {
     return '$gameId:$homeId:$awayId:$venue:$startTime:$playedStatus,$awayAbbr,$homeAbbr,$hdr';
   }
 
+  String get dateTimeString {
+    DateTime localTime = startTime;
+    String date = '${localTime.month}/${localTime.day}/${localTime.year}';
+
+    return date + ' ' + timeString;
+  }
+
   String get timeString {
     // change 24 hour time to local AM/PM time
     DateTime localTime = startTime;

@@ -13,6 +13,6 @@ class GamesLoading extends GamesState {}
 
 class GamesLoaded extends GamesState {
   final Games games;
-
-  GamesLoaded(this.games) : super([games]);
+  final DateTime date;
+  GamesLoaded(this.date, this.games) : super([date, games]);
 }

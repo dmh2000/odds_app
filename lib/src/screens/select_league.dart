@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/bloc.dart' as bloc;
 import '../constants/constants.dart' as constants;
-import '../models/game_model.dart';
 import '../constants/device_data.dart' as device;
 
 class SelectLeague extends StatefulWidget {
@@ -28,12 +27,24 @@ class _SelectLeagueState extends State<SelectLeague> {
     // this screen is always called first so initialize the global device data object
     device.setDeviceType(mq.size.width);
 
-    DateTime now = DateTime.now();
-    String date = '${now.month}/${now.day}/${now.year}';
+    DateTime gameDay = _gamesBloc.gameDay;
+
+    String date = '${gameDay.month}/${gameDay.day}/${gameDay.year}';
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Today is $date'),
+        title: Text('Games For $date'),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              Navigator.popUntil(context,
+                  (route) => route.settings.name == constants.routeDate);
+            },
+            icon: Icon(
+              Icons.home,
+            ),
+          )
+        ],
       ),
       body: BlocListener(
         bloc: _gamesBloc,
@@ -54,7 +65,7 @@ class _SelectLeagueState extends State<SelectLeague> {
                   ),
                 );
               } else {
-                return SelectLeagueWidget(state.games);
+                return SelectLeagueWidget();
               }
             } else {
               return null;
@@ -71,7 +82,7 @@ class _SelectLeagueState extends State<SelectLeague> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Text(
-          "Checking For Today's Games",
+          "Checking For Games",
           style: device.deviceData.homeTextStyle,
         ),
         CircularProgressIndicator(),
@@ -81,8 +92,7 @@ class _SelectLeagueState extends State<SelectLeague> {
 }
 
 class SelectLeagueWidget extends StatelessWidget {
-  const SelectLeagueWidget(
-    Games games, {
+  const SelectLeagueWidget({
     Key key,
   }) : super(key: key);
 
