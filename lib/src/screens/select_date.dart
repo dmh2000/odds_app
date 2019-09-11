@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/bloc.dart' as bloc;
-import '../bloc/games_event.dart';
+import '../bloc/games_event.dart' as gamesEvent;
 import '../constants/constants.dart' as constants;
 
 class SelectDate extends StatelessWidget {
+  /// a button for date select
+  /// gets a text string and a reference to an onPressed function
   Widget _selectButton(String text, {@required VoidCallback onPressed}) {
     return RaisedButton(
       child: Text(
@@ -21,33 +23,43 @@ class SelectDate extends StatelessWidget {
     );
   }
 
+  /// onPressed function for selecting today's games
   VoidCallback _today(BuildContext context, bloc.GamesBloc gamesBloc) {
     return () {
+      // set the date Today
       DateTime today = DateTime.now();
       // load the games immediately
-      gamesBloc.dispatch(GetGames(day: today));
+      gamesBloc.dispatch(gamesEvent.GetGames(day: today));
+      // go to the select league screen
       Navigator.pushNamed(context, constants.routeLeague);
     };
   }
 
+  /// onPressed function for selecting tomorrow's games
   VoidCallback _tomorrow(BuildContext context, bloc.GamesBloc gamesBloc) {
     return () {
+      // set the date for tomorrow
       DateTime tomorrow = DateTime.now().add(Duration(days: 1));
       // load the games immediately
-      gamesBloc.dispatch(GetGames(day: tomorrow));
+      gamesBloc.dispatch(gamesEvent.GetGames(day: tomorrow));
+      // go to the select league screen
       Navigator.pushNamed(context, constants.routeLeague);
     };
   }
 
+  /// onPressed function for selecting yesterday's games
   VoidCallback _yesterday(BuildContext context, bloc.GamesBloc gamesBloc) {
     return () {
+      // set the date for yesterday
       DateTime yesterday = DateTime.now().subtract(Duration(days: 1));
       // load the games immediately
-      gamesBloc.dispatch(GetGames(day: yesterday));
+      gamesBloc.dispatch(gamesEvent.GetGames(day: yesterday));
+      // go to the select league screen
       Navigator.pushNamed(context, constants.routeLeague);
     };
   }
 
+  /// build the select date widget
   @override
   Widget build(BuildContext context) {
     final bloc.GamesBloc gamesBloc = BlocProvider.of<bloc.GamesBloc>(context);

@@ -2,21 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:odds/src/constants/teams.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'src/constants/constants.dart' as constants;
-import 'src/screens/select_date.dart';
-import 'src/screens/select_league.dart';
-import 'src/screens/league_games.dart';
-import 'src/screens/box_score.dart';
-import 'src/bloc/bloc.dart';
+import 'src/screens/screens.dart' as screens;
+import 'src/bloc/bloc.dart' as bloc;
 
 void main() => runApp(OddsApp());
 
 class OddsApp extends StatelessWidget {
-  final GamesBloc _gamesBloc = GamesBloc();
-  final BoxScoreBloc _boxBloc = BoxScoreBloc();
+  // bloc for list of games
+  final bloc.GamesBloc _gamesBloc = bloc.GamesBloc();
+  // bloc for box score for a specific game
+  final bloc.BoxScoreBloc _boxBloc = bloc.BoxScoreBloc();
 
   @override
   Widget build(BuildContext context) {
-    // next the bloc providers
+    // nest the bloc providers so all screens can access them
     return BlocProvider(
       builder: (context) => _gamesBloc,
       child: BlocProvider(
@@ -28,14 +27,19 @@ class OddsApp extends StatelessWidget {
             ),
             initialRoute: constants.routeDate,
             routes: {
-              constants.routeDate: (context) => SelectDate(),
+              // default : select yesterday,today or tomorrow
+              constants.routeDate: (context) => screens.SelectDate(),
+              // select national or american league
               constants.routeLeague: (context) =>
-                  SelectLeague(title: "Leagues"),
+                  screens.SelectLeague(title: "Leagues"),
+              // show national league games
               constants.routeNational: (context) =>
-                  GamesByLeague(leagueNational),
+                  screens.GamesByLeague(leagueNational),
+              // show american league games
               constants.routeAmerican: (context) =>
-                  GamesByLeague(leagueAmerican),
-              constants.routeGameBox: (context) => BoxScore(),
+                  screens.GamesByLeague(leagueAmerican),
+              // show box score for a specific game
+              constants.routeGameBox: (context) => screens.BoxScore(),
             }),
       ),
     );

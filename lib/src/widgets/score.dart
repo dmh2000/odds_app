@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import '../models/models.dart' as models;
 import '../constants/device_data.dart' as device;
 
+/// widget for a single box score
 Widget scoreBox(
     {@required models.Game game,
     @required String awayName,
@@ -53,6 +54,7 @@ Widget scoreBox(
   );
 }
 
+/// a parameterized row in the box score
 Widget scoreRow({
   String col1 = '',
   String col2 = '',
@@ -105,6 +107,7 @@ Widget scoreRow({
   );
 }
 
+// status row has a different layout than scoreRow
 Widget statusRow({
   String col1 = '',
   String col2 = '',
