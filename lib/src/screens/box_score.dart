@@ -40,6 +40,7 @@ class BoxScore extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Loading Game Data'),
+        backgroundColor: constants.appBarColor,
       ),
       body: Center(
         child: Column(
@@ -59,6 +60,7 @@ class BoxScore extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Box Score : $date'),
+        backgroundColor: constants.appBarColor,
         actions: <Widget>[
           IconButton(
             onPressed: () {

@@ -22,10 +22,6 @@ class _SelectLeagueState extends State<SelectLeague> {
   @override
   Widget build(BuildContext context) {
     final bloc.GamesBloc _gamesBloc = BlocProvider.of<bloc.GamesBloc>(context);
-    final MediaQueryData mq = MediaQuery.of(context);
-
-    // this screen is always called first so initialize the global device data object
-    device.setDeviceType(mq.size.width);
 
     DateTime gameDay = _gamesBloc.gameDay;
 
@@ -34,6 +30,7 @@ class _SelectLeagueState extends State<SelectLeague> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Games For $date'),
+        backgroundColor: constants.appBarColor,
         actions: <Widget>[
           IconButton(
             onPressed: () {
@@ -46,31 +43,39 @@ class _SelectLeagueState extends State<SelectLeague> {
           )
         ],
       ),
-      body: BlocListener(
-        bloc: _gamesBloc,
-        listener: (context, bloc.GamesState state) {},
-        child: BlocBuilder(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/stadium.jpg"),
+            fit: BoxFit.fitHeight,
+          ),
+        ),
+        child: BlocListener(
           bloc: _gamesBloc,
-          builder: (BuildContext context, bloc.GamesState state) {
-            if (state is bloc.GamesInitial) {
-              return loading();
-            } else if (state is bloc.GamesLoading) {
-              return loading();
-            } else if (state is bloc.GamesLoaded) {
-              if (state.games.isEmpty()) {
-                return Center(
-                  child: Text(
-                    'No Games Today! Try Again Tomorrow!',
-                    style: device.deviceData.homeTextStyle,
-                  ),
-                );
+          listener: (context, bloc.GamesState state) {},
+          child: BlocBuilder(
+            bloc: _gamesBloc,
+            builder: (BuildContext context, bloc.GamesState state) {
+              if (state is bloc.GamesInitial) {
+                return loading();
+              } else if (state is bloc.GamesLoading) {
+                return loading();
+              } else if (state is bloc.GamesLoaded) {
+                if (state.games.isEmpty()) {
+                  return Center(
+                    child: Text(
+                      'No Games Today! Try Again Tomorrow!',
+                      style: device.deviceData.homeTextStyle,
+                    ),
+                  );
+                } else {
+                  return SelectLeagueWidget();
+                }
               } else {
-                return SelectLeagueWidget();
+                return null;
               }
-            } else {
-              return null;
-            }
-          },
+            },
+          ),
         ),
       ),
     );

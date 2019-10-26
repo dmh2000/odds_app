@@ -29,6 +29,7 @@ class GamesByLeague extends StatelessWidget {
             return Scaffold(
               appBar: AppBar(
                 title: Text('$_league League : $date'),
+                backgroundColor: constants.appBarColor,
                 actions: <Widget>[
                   IconButton(
                     onPressed: () {

@@ -14,6 +14,10 @@ const String titleAmerican = 'American League';
 // images
 const String imageNational = 'national.png';
 const String imageAmerican = 'american.png';
+const String imageLogo = 'logo.jpg';
+
+// colors
+const Color appBarColor = Colors.blueGrey;
 
 const TextStyle daySelectTextStyle = TextStyle(
   fontSize: 25.0,
