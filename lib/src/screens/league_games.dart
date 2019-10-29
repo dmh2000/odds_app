@@ -28,7 +28,7 @@ class GamesByLeague extends StatelessWidget {
             date = '${day.month}/${day.day}/${day.year}';
             return Scaffold(
               appBar: AppBar(
-                title: Text('$_league League : $date'),
+                title: Text('$_league : $date'),
                 backgroundColor: constants.appBarColor,
                 actions: <Widget>[
                   IconButton(

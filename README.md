@@ -8,11 +8,12 @@ The live data is fetched from [MySportsFeeds.com](https://mysportsfeeds.com). Th
 
 The app shows the following screens:
 
-## Home Page - select desired league
-<img width="200" src="./doc/home.png" alt="home page : select National or American League"/>
+## select_date - select a date
+<img width="200" src="./doc/date.png" alt="home page : select National or American League"/>
 
-  - choose a league
-  
+## select_league - select desired league
+<img width="200" src="./doc/league.png" alt="home page : select National or American League"/>
+
 ## Select a Game to View
 <img width="200" src="./doc/select.png" alt="select a game from the list"/>
 

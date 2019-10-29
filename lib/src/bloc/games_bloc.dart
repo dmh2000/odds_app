@@ -38,11 +38,17 @@ class GamesBloc extends bloc.Bloc<GamesEvent, GamesState> {
   }
 
   Future<http.Response> _getGames(day) {
-    gameDay = day;
+    DateTime gameDay = day;
+    String season = 'current';
     // construct the URL for games
+    if (gameDay.month >= 10) {
+      season = '${gameDay.year}-playoff';
+    } else {
+      season = '${gameDay.year}-regular';
+    }
     String dayArg =
         '${day.year}${day.month.toString().padLeft(2, '0')}${day.day.toString().padLeft(2, '0')}';
-    String url = '${apiKey.url}/date/$dayArg/games.json';
+    String url = '${apiKey.url}/$season/date/$dayArg/games.json';
     print(url);
     Map<String, String> headers = {
       'Authorization': 'Basic ${apiKey.key}',
