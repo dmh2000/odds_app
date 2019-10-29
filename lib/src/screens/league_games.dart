@@ -57,7 +57,9 @@ class GamesByLeague extends StatelessWidget {
           } else {
             return Scaffold(
               appBar: AppBar(
-                title: Text('No Games'),
+                title: Text(
+                  'No Games',
+                ),
                 actions: <Widget>[
                   IconButton(
                     onPressed: () {

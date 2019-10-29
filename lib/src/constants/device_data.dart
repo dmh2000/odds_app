@@ -19,6 +19,8 @@ abstract class DeviceData {
 
   TextStyle get statusTextStyle;
 
+  TextStyle get whiteTextStyle;
+
   String imageScale(String img);
 
   double get boxMargin;
@@ -43,6 +45,12 @@ class LargeDevice extends DeviceData {
   @override
   TextStyle get homeTextStyle => TextStyle(
         fontSize: 30.0,
+      );
+
+  @override
+  TextStyle get whiteTextStyle => TextStyle(
+        fontSize: 30.0,
+        color: Colors.white,
       );
 
   @override
@@ -95,6 +103,13 @@ class SmallDevice extends DeviceData {
 
   @override
   TextStyle get homeTextStyle => TextStyle(fontSize: 20.0);
+
+  @override
+  TextStyle get whiteTextStyle => TextStyle(
+        fontSize: 30.0,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      );
 
   @override
   TextStyle get activeTextStyle => TextStyle(fontSize: 20.0);

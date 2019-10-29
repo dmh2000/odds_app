@@ -62,11 +62,18 @@ class _SelectLeagueState extends State<SelectLeague> {
                 return loading();
               } else if (state is bloc.GamesLoaded) {
                 if (state.games.isEmpty()) {
-                  return Center(
-                    child: Text(
-                      'No Games Today! Try Again Tomorrow!',
-                      style: device.deviceData.homeTextStyle,
-                    ),
+                  return Column(
+                    children: <Widget>[
+                      Spacer(flex: 1),
+                      Center(
+                        child: Text(
+                          'No Games Today! Try Again Tomorrow!',
+                          style: device.deviceData.whiteTextStyle,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Spacer(flex: 16),
+                    ],
                   );
                 } else {
                   return SelectLeagueWidget();
@@ -86,11 +93,17 @@ class _SelectLeagueState extends State<SelectLeague> {
         child: Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
+        Spacer(
+          flex: 1,
+        ),
         Text(
           "Checking For Games",
-          style: device.deviceData.homeTextStyle,
+          style: device.deviceData.whiteTextStyle,
         ),
         CircularProgressIndicator(),
+        Spacer(
+          flex: 14,
+        )
       ],
     ));
   }
