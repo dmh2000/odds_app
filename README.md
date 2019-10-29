@@ -6,6 +6,11 @@ The app is a Flutter material app. It uses flutter_bloc as the state management 
 
 The live data is fetched from [MySportsFeeds.com](https://mysportsfeeds.com). This service provides real time data feeds for Major League Baseball, National Hockey League and National Football League. Check it out.
 
+## Other Flutter Apps in my Github 
+  - https://github.com/dmh2000/ProviderX
+  - https://github.com/dmh2000/Flutter-GraphqlX
+  - https://github.com/dmh2000/Flutter-SVG
+  
 The app shows the following screens:
 
 ## select_date - select a date
